@@ -1,0 +1,13 @@
+Program HELLO;
+Start
+Var A, B, C Int32;
+Put("Vvedit A ");
+Get(A);
+Put("Vvedit B ");
+Get(B);
+For C << A  DownTo B
+Start
+	Put(" C=",C);
+Finish
+Get(C);
+Finish

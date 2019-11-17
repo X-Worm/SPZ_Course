@@ -1,0 +1,33 @@
+;===Procedure ltAnd====================
+ltAnd PROC
+	push ax
+	push dx
+	pushf
+
+	fistp lb1
+	fist lb2
+	mov ax,lb1
+	cmp ax,0
+
+	jnz true_and1
+	jz false_and
+	true_and1:
+
+	mov ax,lb2
+	cmp ax,0
+	jnz true_and
+
+	false_and:
+	fldz 
+	jmp l_and
+
+	true_and:
+	fld1
+	l_and: 
+	popf
+	tpop dx
+	pop ax
+	ret
+ltAnd ENDP
+
+	

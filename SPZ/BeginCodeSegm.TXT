@@ -1,0 +1,4 @@
+.CODE
+	mov ax,@data
+	mov ds,ax
+	finit
