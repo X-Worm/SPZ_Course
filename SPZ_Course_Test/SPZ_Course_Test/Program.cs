@@ -15,6 +15,10 @@ namespace SPZ_Course_Test
             StreamReader reader = new StreamReader(@"C:\log\code.txt");
             reader.DiscardBufferedData();
             CodeAnalize.Analize.AnalisisTokens(reader);
+
+            // Error Checking
+            Console.WriteLine(CodeAnalize.Analize.ErrorChecking());
+            Console.ReadKey();
         }
 
         public static void MainMenu()

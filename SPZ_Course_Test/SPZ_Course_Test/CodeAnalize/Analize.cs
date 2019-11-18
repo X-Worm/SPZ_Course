@@ -671,12 +671,12 @@ namespace SPZ_Course_Test.CodeAnalize
         public static int Balans(int nom, KeyWord ends, KeyWord ltBegin, KeyWord ltEnd)
         {
             Stack<int> ss = new Stack<int>();
-            ss.Push(-1);
+            //ss.Push(-1);
             int j = 0, i;
             i = nom;
             for(; TokensTable[i].Type != ends; i++)
             {
-                if (TokensTable[i].Type != KeyWord.ltBegin)
+                if (TokensTable[i].Type == KeyWord.ltBegin)
                 {
                     ss.Push(i);
                 }
@@ -710,7 +710,7 @@ namespace SPZ_Course_Test.CodeAnalize
         {
             int label = 0;
             int i = 0, j = 1, temp = 0, ValNum = 0;
-            StreamWriter ef = new StreamWriter(@"D:\calc.txt");
+            StreamWriter ef = new StreamWriter(@"c:\log\calc.txt");
 
             int Err;
             int while_num = 0, STARTBLOK_ENDBLOK_num = 0;//, r1, r2;
@@ -718,6 +718,11 @@ namespace SPZ_Course_Test.CodeAnalize
 
             ef.WriteLine("Error output file. Next errors found:\n\n");
             NumberOfIdent = 1;
+            IdentTable = new List<Identifier>();
+            LettersTable = new List<Letters>();
+            IdentTable.Add(new Identifier());
+            NumberOfTokens = TokensTable.Count();
+
             //перевірка чи першим словом у програмі є program
             if(TokensTable[0].Type != KeyWord.ltProgram)
             {
@@ -742,12 +747,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 // implement
             }
 
-            if (TokensTable[4].Type != KeyWord.ltVar)
-            {
-                Err_num++;
-                // implement
-            }
-            if(TokensTable[i].Type == KeyWord.ltVar)
+            if (TokensTable[4].Type == KeyWord.ltVar)
             {
                 i = 5;
                 if (TokensTable[i].Type != KeyWord.ltIdentifier)    //перевірка, чи після VARIABLE йдуть ідентифікатори
@@ -761,6 +761,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     {
                         if ((TokensTable[i].Type == KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltComma))
                         {
+                            IdentTable.Add(new Identifier());
                             IdentTable[NumberOfIdent].Name = TokensTable[i].Name;
                             NumberOfIdent++;
                             i = i + 2;
@@ -768,6 +769,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     } while ((TokensTable[i].Type ==  KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltComma));
                     if ((TokensTable[i].Type == KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltType))
                     {
+                        IdentTable.Add(new Identifier());
                         IdentTable[NumberOfIdent].Name = TokensTable[i].Name;
                         NumberOfIdent++;
                         i = i + 2;
@@ -894,6 +896,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         if (TokensTable[j + 1].Type ==  KeyWord.ltLetters)
                         {
                             tmp = "line" + NumberOfLetters.ToString();
+                            LettersTable.Add(new Letters());
                             LettersTable[NumberOfLetters].Name = tmp;
                             LettersTable[NumberOfLetters].Text = TokensTable[j + 1].Text;
                             NumberOfLetters++;
