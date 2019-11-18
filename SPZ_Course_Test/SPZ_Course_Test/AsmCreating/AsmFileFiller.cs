@@ -101,7 +101,7 @@ namespace SPZ_Course_Test.AsmCreating
         /// </summary>
         public static void PrintMOD(StreamWriter f)
         {
-
+            StreamReader reader = new StreamReader();
         }
 
         /// <summary>

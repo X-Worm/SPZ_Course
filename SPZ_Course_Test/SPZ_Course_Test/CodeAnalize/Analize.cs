@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -1002,6 +1003,11 @@ namespace SPZ_Course_Test.CodeAnalize
             f.Write("MOV AH,4Ch\nINT 21h\n");
             if (IsPresentInput) { AsmFileFiller.PrintInput(f); }
             if (IsPresentOutput) { AsmFileFiller.PrintOutput(f); }
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "BeginASM.txt";
+
+
             AsmFileFiller.PrintMOD(f);
             AsmFileFiller.PrintAND(f);
             AsmFileFiller.PrintOR(f);

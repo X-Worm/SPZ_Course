@@ -1,0 +1,9 @@
+;===Procedure mod_====================
+	mod_ PROC
+	fistp lb1
+	fistp lb2
+	fild lb1
+	fild lb2
+	fprem
+	ret
+mod_ ENDP

@@ -46,6 +46,11 @@
     <Compile Include="AsmCreating\AsmFileFiller.cs" />
     <Compile Include="CodeAnalize\Analize.cs" />
     <Compile Include="Code\CodeMain.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="_Enum\Identifier.cs" />
     <Compile Include="_Enum\KeyWord.cs" />
     <Compile Include="Program.cs" />
@@ -56,6 +61,38 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BeginASMFile.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BeginCodeSegm.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintAND.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintEQ.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintGE.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintLE.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintMOD.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintNOT.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SPZ_PrintOR.TXT" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
