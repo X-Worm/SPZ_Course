@@ -18,6 +18,11 @@ namespace SPZ_Course_Test
 
             // Error Checking
             Console.WriteLine(CodeAnalize.Analize.ErrorChecking());
+
+            // GenerateCode
+            StreamWriter writer = new StreamWriter(@"C:\log\CodeGen.txt");
+            CodeAnalize.Analize.GenerateCode(writer);
+            writer.Close();
             Console.ReadKey();
         }
 

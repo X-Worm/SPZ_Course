@@ -1111,8 +1111,8 @@ namespace SPZ_Course_Test.CodeAnalize
                 i++;
             }
 
-            CucleStack.Push(-1);
-            StartBlockStack.Push(-1);
+            CucleStack = new Stack<int>();
+            StartBlockStack = new Stack<int>();
             for(; ;++i)
             {
                 int labelnom = 0;

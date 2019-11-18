@@ -11,3 +11,9 @@ C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Tes
 C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.csproj.CoreCompileInputs.cache
 C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.exe
 C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.pdb
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\bin\Debug\SPZ_Course_Test.exe.config
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\bin\Debug\SPZ_Course_Test.exe
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\bin\Debug\SPZ_Course_Test.pdb
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.csprojAssemblyReference.cache
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.exe
+C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.pdb
