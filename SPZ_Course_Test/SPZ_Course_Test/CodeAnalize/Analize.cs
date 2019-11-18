@@ -105,6 +105,8 @@ namespace SPZ_Course_Test.CodeAnalize
             Console.WriteLine($"Lexem found: {NumberOfTokens}");
         }
 
+        public static int line = 1;
+
         public static KeyWordToken GetNextTokens(StreamReader f, int ii)
         {
             string ch;
@@ -112,7 +114,6 @@ namespace SPZ_Course_Test.CodeAnalize
             bool isComment = false;
 
             KeyWordToken res = new KeyWordToken();
-            int line = 1;
 
             for(; ; )
             {
@@ -171,7 +172,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         throw new NotImplementedException();
                     }
                 }
-                if (ch == "\n" || ch == "\r") line++;
+                if (ch == "\n" ) line++;
                 else if(ch == "\0")
                 {
                     res.Name = "EOF";
@@ -343,8 +344,9 @@ namespace SPZ_Course_Test.CodeAnalize
                 else if((ch == "\"") && !(IsQuotes)) // text
                 {
                     IsQuotes = true;
-                    res.Name = @"\";
+                    res.Name = "\"";
                     res.Type = KeyWord.ltQuotes;
+                    res.Line = line;
                     res.Value = 0;
                     break;
                 }
@@ -435,7 +437,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         res.Line = line;
                         break;
                     }
-                    else if(Char.IsUpper(buf[0]) && (i < 8) || (TokensTable[i - 1].Type == KeyWord.ltProgram))
+                    else if(Char.IsUpper(buf[0]) && (i < 8) || (TokensTable[ii - 1].Type == KeyWord.ltProgram))
                     {
                         res.Name = localBuf;
                         res.Type = KeyWord.ltIdentifier;
@@ -502,7 +504,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     break;
 
                 }
-                else if((ch[0] != '\n') && (ch[0] != '\t') && (ch[0] != ' '))
+                else if((ch[0] != '\n') && (ch[0] != '\t') && (ch[0] != ' ') && (ch[0] != '\r'))
                 {
                     char[] buffer = new char[50];
                     char c;
@@ -510,7 +512,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     buffer[0] = ch[0];
                     for(i = 1; ; i++)
                     {
-                        c = (char)f.Read();
+                        c = (char)f.Peek();
                         if((c == '\n') || (c == '\t') || (c == ';'))
                         {
                             if (c == '\n')
@@ -521,8 +523,8 @@ namespace SPZ_Course_Test.CodeAnalize
                             else break;
                         }
                         buffer[i] = c;
+                        f.Read();
                     }
-                    throw new NotImplementedException();
                     buffer[i] = '\0';
                     res.Name = new string(buffer).Substring(0, i);
                     res.Type = KeyWord.ltUnknown;
@@ -538,6 +540,7 @@ namespace SPZ_Course_Test.CodeAnalize
         {
             KeyWordToken tempTokens = new KeyWordToken();
             int i = 0;
+            int localLine = line;
             char [] type = new char[50];
             IsLetters = false;
             IsQuotes = false;
@@ -583,14 +586,25 @@ namespace SPZ_Course_Test.CodeAnalize
                     i++;
                 }
 
-                Console.WriteLine(i + ": " + TokensTable[i-1].Name);
-                Console.WriteLine(i + ": " + TokensTable[i-1].Value);
-                Console.WriteLine(i + ": " + TokensTable[i-1].Type);
-                Console.WriteLine(i + ": " + TokensTable[i-1].Line);
+                if (localLine != line)
+                {
+                    Console.WriteLine("=".PadLeft(80, '='));
+                    localLine++;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(i + ": " + TokensTable[i-1].Name.PadLeft(18));
+                Console.Write("\t" +  TokensTable[i-1].Value.ToString().PadLeft(10));
+                Console.Write("\t" + TokensTable[i-1].Type.ToString().PadLeft(18));
+                Console.Write("\t" + TokensTable[i-1].Line.ToString().PadLeft(4));
+                Console.Write("\t" + ((TokensTable[i - 1].Text != null ) ?  TokensTable[i - 1].Text.PadLeft(25) : ""));
+                Console.WriteLine();
 
             } while (tempTokens.Type != KeyWord.ltEOF);
             return i;
         }
+
+        public static ConsoleColor color = ConsoleColor.Cyan;
 
         /// <summary>
         /// Syntactic Analyzer
