@@ -173,7 +173,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     }
                 }
                 if (ch == "\n" ) line++;
-                else if(ch == "\0")
+                else if(f.EndOfStream)
                 {
                     res.Name = "EOF";
                     res.Type = KeyWord.ltEOF;
@@ -522,6 +522,7 @@ namespace SPZ_Course_Test.CodeAnalize
                             }
                             else break;
                         }
+                        if ((int)c == 65535) break;
                         buffer[i] = c;
                         f.Read();
                     }
@@ -590,9 +591,12 @@ namespace SPZ_Course_Test.CodeAnalize
                 {
                     Console.WriteLine("=".PadLeft(80, '='));
                     localLine++;
+                    color = (ConsoleColor)((int)color + 1);
+                    if ((int)color > 15) color = ConsoleColor.Blue;
+                    Console.ForegroundColor = color;
                 }
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                //Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write(i + ": " + TokensTable[i-1].Name.PadLeft(18));
                 Console.Write("\t" +  TokensTable[i-1].Value.ToString().PadLeft(10));
                 Console.Write("\t" + TokensTable[i-1].Type.ToString().PadLeft(18));
