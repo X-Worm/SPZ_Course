@@ -19,3 +19,5 @@ C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\D
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.pdb
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.Properties.Resources.resources
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.csproj.GenerateResource.cache
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.Properties.Resources.resources
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_Course_Test\obj\Debug\SPZ_Course_Test.csproj.GenerateResource.cache

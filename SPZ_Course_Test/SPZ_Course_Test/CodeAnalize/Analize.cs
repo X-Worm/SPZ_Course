@@ -707,11 +707,17 @@ namespace SPZ_Course_Test.CodeAnalize
 
         }
 
+        public static string ErrorPatern(int errorNumber, int line, string message)
+        {
+            string errorPattern = $"Error: {errorNumber}, Line: {line}, Message: {message}";
+            return errorPattern;
+        }
+
         public static int ErrorChecking()
         {
             int label = 0;
             int i = 0, j = 1, temp = 0, ValNum = 0;
-            StreamWriter ef = new StreamWriter(@"c:\log\calc.txt");
+            StreamWriter ef = new StreamWriter(@"c:\log\errorReport.txt");
 
             int Err;
             int while_num = 0, STARTBLOK_ENDBLOK_num = 0;//, r1, r2;
@@ -724,28 +730,30 @@ namespace SPZ_Course_Test.CodeAnalize
             IdentTable.Add(new Identifier());
             NumberOfTokens = TokensTable.Count();
 
+           
+
             //перевірка чи першим словом у програмі є program
             if(TokensTable[0].Type != KeyWord.ltProgram)
             {
                 Err_num++;
-                ef.WriteLine($"{Err_num} - line: {TokensTable[i].Line}:\t'Program' expected! (program must begin from the keyword 'Program')\n ");
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t'Program' expected! (program must begin from the keyword 'Program')"));
             }
             //перевірка, чи другим словом в програмі є ім'я програми
             if(TokensTable[1].Type != KeyWord.ltIdentifier)
             {
                 Err_num++;
-                // implement
+                ef.WriteLine(ErrorPatern(Err_num, line, "\tProgram name expected!"));
             }
             if (TokensTable[2].Type != KeyWord.ltEndGroup)
             {
                 Err_num++;
-                // implement
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t';' expected!"));
             }
             //перевірка, чи  другим словом в програмі є var
             if (TokensTable[4].Type != KeyWord.ltVar)
             {
                 Err_num++;
-                // implement
+                ef.WriteLine(ErrorPatern(Err_num, line , "\t'Var' expected!"));
             }
 
             if (TokensTable[4].Type == KeyWord.ltVar)
@@ -754,7 +762,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 if (TokensTable[i].Type != KeyWord.ltIdentifier)    //перевірка, чи після VARIABLE йдуть ідентифікатори
                 {
                     Err_num++;
-                   
+                    ef.WriteLine(ErrorPatern(Err_num, line, "\tIdentifier expected!"));
                 }
                 else
                 {
@@ -781,15 +789,18 @@ namespace SPZ_Course_Test.CodeAnalize
                         if (TokensTable[i].Type == KeyWord.ltComma)
                         {
                             Err_num++;
+                            ef.WriteLine(ErrorPatern(Err_num, line, "\tToo much commas!"));
                         }
                         else
                         {
                             Err_num++;
+                            ef.WriteLine(ErrorPatern(Err_num, line, "\tType of variable ('Int32') expected!"));
                         }
                     }
                     else
                     {
                         Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, line, "\tToo much commas or identifier expected!"));
                     }
                 }
                 i++;
@@ -798,33 +809,38 @@ namespace SPZ_Course_Test.CodeAnalize
             if (TokensTable[i].Type != KeyWord.ltEndGroup)
             {
                 Err_num++;
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t';' expected!"));
             }
             else i++;
             //перевірка, чи  після оголошення змінних йде start
             if (TokensTable[3].Type != KeyWord.ltBegin)
             {
                 Err_num++;
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t'Start' expected!"));
             }
             else i++;
             if (TokensTable[NumberOfTokens - 2].Type != KeyWord.ltEnd)
             {
                 Err_num++;
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t'Finish' expected!"));
             }
             if (TokensTable[NumberOfTokens - 1].Type != KeyWord.ltEOF)
             {
                 Err_num++;
+                ef.WriteLine(ErrorPatern(Err_num, line, "\tEnd of file expected!"));
             }
             for (j = 0; TokensTable[j].Type !=  KeyWord.ltBegin; j++) ;
             Err = Balans(j - 1, KeyWord.ltEOF, KeyWord.ltBegin, KeyWord.ltEnd);
             if (Err == 1)
             {
                 Err_num++;
+                ef.WriteLine(ErrorPatern(Err_num , line, "\tToo much 'Start'!"));
                
             }
             if (Err == 2)
             {
                 Err_num++;
-                
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t'Finish' expected!"));
             }
             for (j = 0; ; j++)
             {
@@ -832,7 +848,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 if (TokensTable[j].Type == KeyWord.ltUnknown)        //Пошук невідомих слів(не ідентифікаторів)
                 {
                     Err_num++;
-                    // Implement
+                    ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tUnknown identifier! ") + TokensTable[j].Name);
                 }
                 if ((TokensTable[j].Type == KeyWord.ltIdentifier) && (TokensTable[j - 1].Type != KeyWord.ltProgram))
                 {
@@ -848,6 +864,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (flag != 1)
                     {
                         Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tUnknown identifier! ") + TokensTable[j].Name);
                     }
                 }
                 if (TokensTable[j].Type ==  KeyWord.ltNewValue)
@@ -857,12 +874,12 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (BraketErr == 1)                     //Баланс дужок після знаку =
                     {
                         Err_num++;
-                        // Implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tToo much ')'!"));
                     }
                     if (BraketErr == 2)
                     {
                         Err_num++;
-                        // Implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[i].Line, "\t')' expected!"));
                     }
                     if (TokensTable[j - 2].Type != KeyWord.ltFor) buf = IsExpression((j + 1), ef);
                     else buf = 0;
@@ -874,7 +891,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (TokensTable[j + 1].Type !=  KeyWord.ltLBraket)
                     {
                         Err_num++;
-                        //implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "tToo much ')'!"));
                     }
                     //buf = IsExpression((j+1),ef);
                     //Err_num=Err_num+buf;
@@ -882,12 +899,12 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (brak == 1)
                     {
                         Err_num++;
-                        // Implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tToo much ')'!"));
                     }
                     if (brak == 2)
                     {
                         Err_num++;
-                        // Implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[i].Line, "\t')' expected!"));
                     }
                     if (TokensTable[j + 2].Type ==  KeyWord.ltQuotes)
                     {
@@ -905,13 +922,13 @@ namespace SPZ_Course_Test.CodeAnalize
                         if (TokensTable[j + 2].Type != KeyWord.ltQuotes)
                         {
                             Err_num++;
-                            // implement
+                            ef.WriteLine(ErrorPatern(Err_num, line, "\t\" expected!"));
                         }
                     }
                     if (TokensTable[j + 3].Type ==  KeyWord.ltIdentifier)
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\t, expected!"));
                     }
                     if (TokensTable[j + 3].Type ==  KeyWord.ltComma)
                     {
@@ -919,7 +936,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         if (TokensTable[j + 1].Type !=  KeyWord.ltIdentifier)
                         {
                             Err_num++;
-                            //implement
+                            ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tIdentifier expected!"));
                         }
                     }
                 }
@@ -928,22 +945,22 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (TokensTable[j + 1].Type !=  KeyWord.ltLBraket)
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 1].Line, "\t'(' expected!"));
                     }
                     if (TokensTable[j + 2].Type !=  KeyWord.ltIdentifier)
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 2].Line, "\tIdentifier expected!"));
                     }
                     if (TokensTable[j + 3].Type !=  KeyWord.ltRBraket)
                     {
                         Err_num++;
-                        //implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 3].Line, "\t')' expected!"));
                     }
                     if (TokensTable[j + 4].Type !=  KeyWord.ltEndGroup)
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\t';' expected!"));
                     }
                 }
                 if (TokensTable[j].Type ==  KeyWord.ltFor)               //перевірка for
@@ -951,32 +968,32 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (TokensTable[j + 1].Type !=  KeyWord.ltIdentifier)
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 1].Line, "\tIdentifier expected after 'For'!"));
                     }
                     else if (TokensTable[j + 2].Type !=  KeyWord.ltNewValue)
                     {
                         Err_num++;
-                        //implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 1].Line, "\t'<<' expected after identifier!"));
                     }
                     else if ((TokensTable[j + 3].Type != KeyWord.ltIdentifier) && (TokensTable[j + 3].Type !=  KeyWord.ltNumber))
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j+3].Line, "\tIdentifier or number expected after '<<'!"));
                     }
                     else if (TokensTable[j + 4].Type !=  KeyWord.ltDownTo)
                     {
                         Err_num++;
-                       // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\t'DownTo' expected after idetifier!"));
                     }
                     else if ((TokensTable[j + 5].Type !=  KeyWord.ltIdentifier) && (TokensTable[j + 5].Type !=  KeyWord.ltNumber))
                     {
                         Err_num++;
-                        // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 5].Line, "\tIdentifier or number expected after '<<'!"));
                     }
                     else if (TokensTable[j + 6].Type !=  KeyWord.ltBegin)
                     {
                         Err_num++;
-                       // implement
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 6].Line, "t'Start' expected!"));
                     }
                 }
                 if (TokensTable[j].Type ==  KeyWord.ltEOF) break;
