@@ -13,14 +13,14 @@ namespace SPZ_Course_Test
         {
             //MainMenu();
             StreamReader reader = new StreamReader(@"C:\log\code.txt");
-            reader.DiscardBufferedData();
+.            reader.DiscardBufferedData();
             CodeAnalize.Analize.AnalisisTokens(reader);
 
             // Error Checking
             Console.WriteLine(CodeAnalize.Analize.ErrorChecking());
 
             // GenerateCode
-            StreamWriter writer = new StreamWriter(@"C:\log\CodeGen.txt");
+            StreamWriter writer = new StreamWriter(@"C:\log\CodeGen.asm");
             CodeAnalize.Analize.GenerateCode(writer);
             writer.Close();
             Console.ReadKey();

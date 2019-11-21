@@ -19,7 +19,7 @@ namespace SPZ_Course_Test.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,32 +57,6 @@ namespace SPZ_Course_Test.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DOSSEG
-        ///.MODEL SMALL
-        ///.STACK 100h
-        ///.486
-        ///.DATA
-        ///.
-        /// </summary>
-        internal static string BeginASMFile {
-            get {
-                return ResourceManager.GetString("BeginASMFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .CODE
-        ///	mov ax,@data
-        ///	mov ds,ax
-        ///	finit.
-        /// </summary>
-        internal static string BeginCodeSegm {
-            get {
-                return ResourceManager.GetString("BeginCodeSegm", resourceCulture);
             }
         }
         

@@ -677,11 +677,11 @@ namespace SPZ_Course_Test.CodeAnalize
             i = nom;
             for(; TokensTable[i].Type != ends; i++)
             {
-                if (TokensTable[i].Type == KeyWord.ltBegin)
+                if (TokensTable[i].Type == ltBegin)
                 {
                     ss.Push(i);
                 }
-                if(TokensTable[i].Type == KeyWord.ltEnd)
+                if(TokensTable[i].Type == ltEnd)
                 {
                     if(ss.Count() == 0)
                     {
@@ -1014,25 +1014,36 @@ namespace SPZ_Course_Test.CodeAnalize
             PrintEnding(f);
         }
 
+        public enum FileNames
+        {
+            SPZ_PrintAND,
+            SPZ_PrintEQ,
+            SPZ_PrintGE,
+            SPZ_PrintLE,
+            SPZ_PrintMOD,
+            SPZ_PrintNOT,
+            SPZ_PrintOR
+        }
+
         public static void PrintEnding(StreamWriter f)
         {
+            string filePath = System.AppDomain.CurrentDomain.BaseDirectory;
+
+            string FileName = string.Format("{0}Resources\\", Path.GetFullPath(Path.Combine(filePath, @"..\..\")));
+
             f.Write(";======================================\n");
             f.Write("MOV AH,4Ch\nINT 21h\n");
             if (IsPresentInput) { AsmFileFiller.PrintInput(f); }
             if (IsPresentOutput) { AsmFileFiller.PrintOutput(f); }
 
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "BeginASM.txt";
-
-
-            AsmFileFiller.PrintMOD(f);
-            AsmFileFiller.PrintAND(f);
-            AsmFileFiller.PrintOR(f);
-            AsmFileFiller.PrintNOT(f);
-            AsmFileFiller.PrintEQ(f);
-            AsmFileFiller.PrintGE(f);
-            AsmFileFiller.PrintLE(f);
-            f.Write(";======================================\n");
+            AsmFileFiller.PrintMOD(f, FileName);
+            AsmFileFiller.PrintAND(f, FileName);
+            AsmFileFiller.PrintOR(f, FileName);
+            AsmFileFiller.PrintNOT(f, FileName);
+            AsmFileFiller.PrintEQ(f, FileName);
+            AsmFileFiller.PrintGE(f, FileName);
+            AsmFileFiller.PrintLE(f, FileName);
+            f.Write("\n;======================================\n");
             f.Write("END");
         }
 
@@ -1061,59 +1072,62 @@ namespace SPZ_Course_Test.CodeAnalize
             if (IsPresentInput)
             {
                 // f.WriteLine();
-                f.WriteLine("MY_MUL MACRO X,Y,Z\n");
-                f.WriteLine("\tmov z,0\n"); f.WriteLine("\tmov z+2,0\n"); f.WriteLine("\tmov ax,x\n");
-                f.WriteLine("\tmul y\n"); f.WriteLine("\tmov z,ax\n"); f.WriteLine("\tmov z+2,dx\n");
-                f.WriteLine("\tmov ax,x+2\n"); f.WriteLine("\tmul y\n"); f.WriteLine("\tadd z+2,ax\n");
-                f.WriteLine("\tmov ax,z\n"); f.WriteLine("\tmov dx,z+2\n"); f.WriteLine("ENDM\n");
+                f.WriteLine("MY_MUL MACRO X,Y,Z");
+                f.WriteLine("\tmov z,0"); f.WriteLine("\tmov z+2,0"); f.WriteLine("\tmov ax,x");
+                f.WriteLine("\tmul y"); f.WriteLine("\tmov z,ax"); f.WriteLine("\tmov z+2,dx");
+                f.WriteLine("\tmov ax,x+2"); f.WriteLine("\tmul y"); f.WriteLine("\tadd z+2,ax");
+                f.WriteLine("\tmov ax,z"); f.WriteLine("\tmov dx,z+2"); f.WriteLine("ENDM");
+            }
 
                 int i;
-                f.WriteLine(";======Declaration of variables =======\n");
+                f.WriteLine(";======Declaration of variables =======");
 
                 for (i = 1; i < NumberOfIdent; ++i)
                 {
-                    f.WriteLine( $"\t{IdentTable[i].Name}\tdd\t0{IdentTable[i].Value}h\n");
+                    f.WriteLine( $"\t{IdentTable[i].Name}\tdd\t0{IdentTable[i].Value}h");
                 }
-                f.WriteLine("\tlb1\tdw\t0h\n"); //Змінні для обробки логічних операцій
-                f.WriteLine("\tlb2\tdw\t0h\n");
-                f.WriteLine("\tbuf_if\tdw\t0h\n");
-                f.WriteLine("\tbuf\tdd\t0\n\trc\tdw\t0\n");
+                f.WriteLine("\tlb1\tdw\t0h"); //Змінні для обробки логічних операцій
+                f.WriteLine("\tlb2\tdw\t0h");
+                f.WriteLine("\tbuf_if\tdw\t0h");
+                f.WriteLine("\tbuf\tdd\t0\n\trc\tdw\t0");
                 if (IsPresentInput)
                 {
                     f.WriteLine(";======Data for Get() functions========\n");
-                    f.WriteLine("\terFlag db 0\n");
-                    f.WriteLine("\tTStr db 10 dup (0)\n");
-                    f.WriteLine("\tTBin dw 0,0\n");
-                    f.WriteLine("\tMaxLen dw 0\n");
-                    f.WriteLine("\tFlagS db 0\n");
-                    f.WriteLine("\tMul10 dw 1,0\n");
-                    f.WriteLine("\tmy_z dw 0,0\n");
-                    f.WriteLine("\terStr1 db 13,10,'Data not input_variable',13,10,'$'\n");
-                    f.WriteLine("\terStr2 db 13,10,'Incorrectly data ',13,10,'$'\n");
-                    f.WriteLine("\terStr3 db 13,10,'Data is too long ',13,10,'$'\n");
+                    f.WriteLine("\terFlag db 0");
+                    f.WriteLine("\tTStr db 10 dup (0)");
+                    f.WriteLine("\tTBin dw 0,0");
+                    f.WriteLine("\tMaxLen dw 0");
+                    f.WriteLine("\tFlagS db 0");
+                    f.WriteLine("\tMul10 dw 1,0");
+                    f.WriteLine("\tmy_z dw 0,0");
+                    f.WriteLine("\terStr1 db 13,10,'Data not input_variable',13,10,'$'");
+                    f.WriteLine("\terStr2 db 13,10,'Incorrectly data ',13,10,'$'");
+                    f.WriteLine("\terStr3 db 13,10,'Data is too long ',13,10,'$'");
                 }
                 if (IsPresentOutput)
                 {
                     f.WriteLine(";=======Data for Put() functions=======\n");
-                    f.WriteLine("\tMSign\tdb\t\'+\',\'$\'\n");
-                    f.WriteLine("\tX_Str\tdb\t12 dup (0)\n");
-                    f.WriteLine("\tten\tdw\t10\n");
-                    f.WriteLine("\tX1\tdw\t0h\n");
-                    f.WriteLine("\tMX1\tdb\t13,10,\'>> $\'\n");
-                    f.WriteLine("\tper\tdb\t10,13,\'$\'\n");
+                    f.WriteLine("\tMSign\tdb\t\'+\',\'$\'");
+                    f.WriteLine("\tX_Str\tdb\t12 dup (0)");
+                    f.WriteLine("\tten\tdw\t10");
+                    f.WriteLine("\tX1\tdw\t0h");
+                    f.WriteLine("\tMX1\tdb\t13,10,\'>> $\'");
+                    f.WriteLine("\tper\tdb\t10,13,\'$\'");
                     for (i = 0; i < NumberOfLetters; i++)
                     {
-                        f.WriteLine($"\t{LettersTable[i].Name}\tdb\t\'{LettersTable[i].Text}\',\'$\'\n");
+                        f.WriteLine($"\t{LettersTable[i].Name}\tdb\t\'{LettersTable[i].Text}\',\'$\'");
                     };
                 }
-            }
+            
         }
 
         public static void BeginCodeSegm(StreamWriter f)
         {
-            f.WriteLine(".CODE\n\tmov ax,@data\n\tmov ds,ax\n");
-            f.WriteLine("finit\n");
+            f.WriteLine(".CODE\n\tmov ax,@data\n\tmov ds,ax");
+            f.WriteLine("\tfinit\n");
         }
+
+        public static int labelnom { get; set; }
 
         public static void PrintCode(StreamWriter f)
         {
@@ -1138,7 +1152,7 @@ namespace SPZ_Course_Test.CodeAnalize
             StartBlockStack = new Stack<int>();
             for(; ;++i)
             {
-                int labelnom = 0;
+                labelnom = 0;
                 l.Type = TokensTable[i].Type;
                 l.Name = TokensTable[i].Name;
                 l.Value = TokensTable[i].Value;
@@ -1152,12 +1166,12 @@ namespace SPZ_Course_Test.CodeAnalize
                     if (StartBlockStack.Peek() >= 0)
                     {
                         int temp = CucleStack.Pop();
-                        f.WriteLine($"\tmov ax, word ptr {TokensTable[temp].Name}\n");
+                        f.WriteLine($"\tmov ax, word ptr {TokensTable[temp].Name}");
                         f.WriteLine("\tdec ax\n");
-                        f.WriteLine($"\tmov word ptr {TokensTable[temp].Name}, ax\n");
+                        f.WriteLine($"\tmov word ptr {TokensTable[temp].Name}, ax");
                         temp = StartBlockStack.Pop();
-                        f.WriteLine( $"\tjmp forStart{temp}\n");
-                        f.WriteLine($"forFinish{temp}:\n");
+                        f.WriteLine( $"\tjmp forStart{temp}");
+                        f.WriteLine($"forFinish{temp}:");
                     }
                     else
                     {
@@ -1170,21 +1184,21 @@ namespace SPZ_Course_Test.CodeAnalize
                     {
                         if (TokensTable[i + 3].Text.Length == 0)
                         {
-                            f.WriteLine("\tlea dx,per\n");
-                            f.WriteLine("\tmov ah,09\n\tint 21h\n");
+                            f.WriteLine("\tlea dx,per");
+                            f.WriteLine("\tmov ah,09\n\tint 21h");
                         }
                         else
                         {
-                            f.WriteLine( $"\tlea dx,{LettersTable[CurrLet].Name}\n");
-                            f.WriteLine("\tmov ah,09\n\tint 21h\n");
+                            f.WriteLine( $"\tlea dx,{LettersTable[CurrLet].Name}");
+                            f.WriteLine("\tmov ah,09\n\tint 21h");
                         }
                         CurrLet++;
                         i += 4;
                         if (TokensTable[i + 1].Type ==  KeyWord.ltComma)
                         {
-                            f.WriteLine($"\tfild {TokensTable[i+2].Name}\n");
-                            f.WriteLine( "\tfistp buf\n");
-                            f.WriteLine("\tcall output\n");
+                            f.WriteLine($"\tfild {TokensTable[i+2].Name}");
+                            f.WriteLine( "\tfistp buf");
+                            f.WriteLine("\tcall output");
                             i += 4;
                         }
                         if (TokensTable[i + 1].Type ==  KeyWord.ltRBraket)
@@ -1196,14 +1210,14 @@ namespace SPZ_Course_Test.CodeAnalize
                     {
                         i = ConvertToPostfixForm(i + 1);
                         GenASMCode("buf", f);
-                        f.WriteLine("\tcall output\n", f);
+                        f.WriteLine("\tcall output", f);
                     }
                 }
                 if (l.Type ==  KeyWord.ltRead)
                 {
-                    f.WriteLine("\tcall input\n");
-                    f.WriteLine( "\tfild buf\n");
-                    f.WriteLine( $"\tfistp {TokensTable[i+2].Name}\n");
+                    f.WriteLine("\tcall input");
+                    f.WriteLine( "\tfild buf");
+                    f.WriteLine( $"\tfistp {TokensTable[i+2].Name}");
                     i += 4;
                 }
                 if (l.Type ==  KeyWord.ltFor)
@@ -1216,8 +1230,8 @@ namespace SPZ_Course_Test.CodeAnalize
                         buf[1] = (char)TokensTable[i + 3].Value.ToString("%04x")[0];
                         //sprintf(&buf[1], "%04x", TokensTable[i + 3].value);
                         buf[6] = '\0';
-                        f.WriteLine($"\tmov word ptr buf,{new string(buf)}h\n");
-                        f.Write("\tfild buf\n");
+                        f.WriteLine($"\tmov word ptr buf,{new string(buf)}h");
+                        f.Write("\tfild buf");
                     }
                     else
                     {

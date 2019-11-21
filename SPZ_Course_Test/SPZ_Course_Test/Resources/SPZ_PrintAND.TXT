@@ -25,9 +25,10 @@ ltAnd PROC
 	fld1
 	l_and: 
 	popf
-	tpop dx
+	pop dx
 	pop ax
 	ret
 ltAnd ENDP
+
 
 	
