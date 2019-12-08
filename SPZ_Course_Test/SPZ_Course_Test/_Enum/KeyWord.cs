@@ -8,25 +8,24 @@ namespace SPZ_Course_Test.Enum
 {
     enum KeyWord
     {
-        ltProgram = 0,  // program
-        ltVar,      // var
-        ltType,     // int32
-        ltBegin,        // start
-        ltEnd,      // finish
-        ltRead,     // get
-        ltWrite,        // put
-        ltFor,      // For
-        ltDownTo,   // DownTo
-        ltNewValue, // <<
+        ltProgram = 0,  // PROGRAM
+        ltVar,      // VAR
+        ltType,     // LONGINT
+        ltBegin,        // BEGIN
+        ltEnd,      // END
+        ltRead,     // GET
+        ltWrite,        // PUT
+        ltWhile,      // WHILE
+        ltNewValue, // <-
         ltAdd,      // +
         ltSub,      // -
-        ltMul,      // mul
-        ltDiv,      // div
-        ltMod,      // mod
-        ltEqu,      // ==
-        ltNotEqu,       // !=
-        ltLess,     // <
-        ltGreate,       // >
+        ltMul,      // *
+        ltDiv,      // DIV
+        ltMod,      // MOD
+        ltEqu,      // =
+        ltNotEqu,       // <>
+        ltLess,     // LE
+        ltGreate,       // GE
         ltNot,      // !!
         ltAnd,      // &&
         ltOr,       // ||

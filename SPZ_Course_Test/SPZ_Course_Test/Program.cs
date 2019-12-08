@@ -9,11 +9,11 @@ namespace SPZ_Course_Test
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             //MainMenu();
             StreamReader reader = new StreamReader(@"C:\log\code.txt");
-.            reader.DiscardBufferedData();
+            reader.DiscardBufferedData();
             CodeAnalize.Analize.AnalisisTokens(reader);
 
             // Error Checking
