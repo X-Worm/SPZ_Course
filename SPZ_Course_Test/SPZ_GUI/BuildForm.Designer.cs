@@ -74,6 +74,7 @@
             this.runButton.Size = new System.Drawing.Size(51, 52);
             this.runButton.TabIndex = 3;
             this.runButton.UseVisualStyleBackColor = true;
+            this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
             // label1
             // 

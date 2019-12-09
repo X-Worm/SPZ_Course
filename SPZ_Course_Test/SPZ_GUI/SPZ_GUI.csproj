@@ -113,6 +113,8 @@
     <Content Include="Resources\SPZ_PrintMOD.TXT" />
     <Content Include="Resources\SPZ_PrintNOT.TXT" />
     <Content Include="Resources\SPZ_PrintOR.TXT" />
+    <Content Include="Resources\TASM.EXE" />
+    <Content Include="Resources\TLINK.EXE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

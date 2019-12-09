@@ -246,12 +246,16 @@ namespace SPZ_GUI
                     {
                         Analize.GenerateCode(writer);
                     }
+                    buildForm.asmFile = codeFile;
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show($"Asm code was not generated: {ex.Message}");
                     return;
                 }
+
+                // build and run program
+
             }
         }
     }
