@@ -8,3 +8,13 @@ C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.pdb
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.SP_Course.resources
 C:\Users\Vasyl\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.BuildForm.resources
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\bin\Debug\SPZ_GUI.exe.config
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\bin\Debug\SPZ_GUI.exe
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\bin\Debug\SPZ_GUI.pdb
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.csprojAssemblyReference.cache
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.BuildForm.resources
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.SP_Course.resources
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.Properties.Resources.resources
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.csproj.GenerateResource.cache
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.exe
+C:\Users\vasyl.kindii\Documents\GitHub\SPZ_Course\SPZ_Course_Test\SPZ_GUI\obj\Debug\SPZ_GUI.pdb
