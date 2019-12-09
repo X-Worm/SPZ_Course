@@ -102,6 +102,10 @@ namespace SPZ_GUI
                     MessageBox.Show($"Exe file is not generated: {exeFilePath}");
                     return;
                 }
+                else
+                {
+                    MessageBox.Show($"File generated to: {exeFilePath}");
+                }
             }
             catch(Exception ex)
             {

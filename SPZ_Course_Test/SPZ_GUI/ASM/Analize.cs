@@ -1206,19 +1206,19 @@ namespace SPZ_GUI.ASM
                 //    f.Write("\tcmp ax,0\n");
                 //    f.Write($"\tjz forFinish{lab + 1}\n");
                 //}
-                //if ((l.Type ==  KeyWord.ltNewValue) && (TokensTable[i - 2].Type !=  KeyWord.ltFor))
-                //{
-                //    int bufi;
-                //    bufi = i;
-                //    i = ConvertToPostfixForm(i + 1);//Генерація постфіксного виразу
-                //    if (i < 0)
-                //    {
-                //        i = -i;
-                //        //
-                //        continue;
-                //    }           //Генерація асемблерного коду з постфіксного виразу
-                //    GenASMCode(TokensTable[bufi - 1].Name, f);
-                //}
+                if ((l.Type == KeyWord.ltNewValue))
+                {
+                    int bufi;
+                    bufi = i;
+                    i = ConvertToPostfixForm(i + 1);//Генерація постфіксного виразу
+                    if (i < 0)
+                    {
+                        i = -i;
+                        //
+                        continue;
+                    }           //Генерація асемблерного коду з постфіксного виразу
+                    GenASMCode(TokensTable[bufi - 1].Name, f);
+                }
             }
         }
 
@@ -1236,11 +1236,9 @@ namespace SPZ_GUI.ASM
                     }
                     else if (TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltNumber)
                     {
-                        char[] buf = new char[10];
-                        buf[0] = '0';
-                        buf[1] = (char)TokensTable[BufExprPostfixForm[5]].Value.ToString("%04x")[0];
-                        buf[6] = '\0';
-                        f.Write($"\tmov word ptr buf,{new string(buf)}h\n", buf);
+                        string buf = "0";
+                        buf += String.Format("{0:X}", TokensTable[BufExprPostfixForm[n]].Value);
+                        f.Write($"\tmov word ptr buf,{buf}h\n", buf);
                         f.Write("\tfild buf\n");
                     }
                     else if ((TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltLBraket) || (TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltRBraket))
@@ -1274,6 +1272,7 @@ namespace SPZ_GUI.ASM
 
         public static int ConvertToPostfixForm(int i) //Формує в масиві послідовність номерів лексем яка відповідає постфіксній формі
         {
+            StackStack = new Stack<int>();
             int n, z;
             n = 0;
             for (; (TokensTable[i + n].Type != KeyWord.ltEndGroup); ++n) ;      //Встановлення коректності та довжини вхідного масиву
