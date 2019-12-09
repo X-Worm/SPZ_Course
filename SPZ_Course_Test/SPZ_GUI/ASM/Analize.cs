@@ -1,17 +1,13 @@
-﻿using SPZ_Course_Test._Enum;
-using SPZ_Course_Test.AsmCreating;
-using SPZ_Course_Test.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPZ_Course_Test.CodeAnalize
+namespace SPZ_GUI.ASM
 {
-    class Analize
+    public class Analize
     {
         /// <summary>
         /// list of tokens
@@ -63,43 +59,43 @@ namespace SPZ_Course_Test.CodeAnalize
             outTokenFiles.WriteLine("===================================================================\n");
             outTokenFiles.WriteLine("\tName\t\tType\t\t\tValue\t\tLine\tText\n");
             outTokenFiles.WriteLine("===================================================================\n");
-            for(i = 0; i < NumberOfTokens; i++)
+            for (i = 0; i < NumberOfTokens; i++)
             {
                 switch (TokensTable[i].Type)
                 {
-                    case KeyWord.ltProgram:     type = "Program\t"; break;
-                    case KeyWord.ltVar:         type = "Var\t"; break;
-                    case KeyWord.ltType:        type = "Type\t"; break;
-                    case KeyWord.ltBegin:       type = "Start\t"; break;
-                    case KeyWord.ltEnd:         type = "Finish\t"; break;
-                    case KeyWord.ltRead:        type = "Get\t"; break;
-                    case KeyWord.ltWrite:       type = "Put\t"; break;
-                    case KeyWord.ltWhile:       type = "While\t"; break;
-                    case KeyWord.ltNewValue:    type = "New value"; break;
-                    case KeyWord.ltAdd:         type = "+\t"; break;
-                    case KeyWord.ltSub:         type = "-\t"; break;
-                    case KeyWord.ltMul:         type = "Mul\t"; break;
-                    case KeyWord.ltDiv:         type = "Div\t"; break;
-                    case KeyWord.ltMod:         type = "Mod\t"; break;
-                    case KeyWord.ltEqu:         type = "==\t"; break;
-                    case KeyWord.ltNotEqu:      type = "!=\t"; break;
-                    case KeyWord.ltNot:         type = "!!\t"; break;
-                    case KeyWord.ltLess:        type = "<\t"; break;
-                    case KeyWord.ltGreate:      type = ">\t"; break;
-                    case KeyWord.ltAnd:         type = "$$\t"; break;
-                    case KeyWord.ltOr:          type = "||\t"; break;
-                    case KeyWord.ltEOF:         type = "end of file"; break;
-                    case KeyWord.ltEndGroup:    type = "end group"; break;
-                    case KeyWord.ltComma:       type = "comma\t"; break;
-                    case KeyWord.ltIdentifier:  type = "identifier\t"; break;
-                    case KeyWord.ltNumber:      type = "number\t"; break;
-                    case KeyWord.ltLBraket:     type = "left braket"; break;
-                    case KeyWord.ltRBraket:     type = "right braket"; break;
-                    case KeyWord.ltUnknown:     type = "unknown\t"; break;
-                    case KeyWord.ltLetters:     type = "Text line\t"; break;
-                    case KeyWord.ltQuotes:      type = "\"\t"; break;
+                    case KeyWord.ltProgram: type = "Program\t"; break;
+                    case KeyWord.ltVar: type = "Var\t"; break;
+                    case KeyWord.ltType: type = "Type\t"; break;
+                    case KeyWord.ltBegin: type = "Start\t"; break;
+                    case KeyWord.ltEnd: type = "Finish\t"; break;
+                    case KeyWord.ltRead: type = "Get\t"; break;
+                    case KeyWord.ltWrite: type = "Put\t"; break;
+                    case KeyWord.ltWhile: type = "While\t"; break;
+                    case KeyWord.ltNewValue: type = "New value"; break;
+                    case KeyWord.ltAdd: type = "+\t"; break;
+                    case KeyWord.ltSub: type = "-\t"; break;
+                    case KeyWord.ltMul: type = "Mul\t"; break;
+                    case KeyWord.ltDiv: type = "Div\t"; break;
+                    case KeyWord.ltMod: type = "Mod\t"; break;
+                    case KeyWord.ltEqu: type = "==\t"; break;
+                    case KeyWord.ltNotEqu: type = "!=\t"; break;
+                    case KeyWord.ltNot: type = "!!\t"; break;
+                    case KeyWord.ltLess: type = "<\t"; break;
+                    case KeyWord.ltGreate: type = ">\t"; break;
+                    case KeyWord.ltAnd: type = "$$\t"; break;
+                    case KeyWord.ltOr: type = "||\t"; break;
+                    case KeyWord.ltEOF: type = "end of file"; break;
+                    case KeyWord.ltEndGroup: type = "end group"; break;
+                    case KeyWord.ltComma: type = "comma\t"; break;
+                    case KeyWord.ltIdentifier: type = "identifier\t"; break;
+                    case KeyWord.ltNumber: type = "number\t"; break;
+                    case KeyWord.ltLBraket: type = "left braket"; break;
+                    case KeyWord.ltRBraket: type = "right braket"; break;
+                    case KeyWord.ltUnknown: type = "unknown\t"; break;
+                    case KeyWord.ltLetters: type = "Text line\t"; break;
+                    case KeyWord.ltQuotes: type = "\"\t"; break;
                 }
-                outTokenFiles.WriteLine($"{(i+1)}\t{TokensTable[i].Name}\t{type}\t{TokensTable[i].Value}\t{TokensTable[i].Line}\t{TokensTable[i].Text}");
+                outTokenFiles.WriteLine($"{(i + 1)}\t{TokensTable[i].Name}\t{type}\t{TokensTable[i].Value}\t{TokensTable[i].Line}\t{TokensTable[i].Text}");
             }
             outTokenFiles.Close();
             Console.WriteLine($"Lexem found: {NumberOfTokens}");
@@ -110,12 +106,12 @@ namespace SPZ_Course_Test.CodeAnalize
         public static KeyWordToken GetNextTokens(StreamReader f, int ii)
         {
             string ch;
-            char []buf = new char[50];
+            char[] buf = new char[50];
             bool isComment = false;
 
             KeyWordToken res = new KeyWordToken();
 
-            for(; ; )
+            for (; ; )
             {
                 if (IsQuotes)
                 {
@@ -124,7 +120,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     int letcnt = 0;
                     IsLetters = true;
                     c = ((char)f.Read()).ToString();
-                    while((c != "\"")&& (letcnt <= 255) && (c != "\n"))
+                    while ((c != "\"") && (letcnt <= 255) && (c != "\n"))
                     {
                         tmp += c;
                         letcnt++;
@@ -141,28 +137,28 @@ namespace SPZ_Course_Test.CodeAnalize
                     break;
                 }
                 ch = ((char)f.Read()).ToString();
-                if(ch == "{")
+                if (ch == "{")
                 {
                     string c = "";
                     c = ((char)f.Read()).ToString();
-                    
-                        isComment = true;
-                        while (isComment)
+
+                    isComment = true;
+                    while (isComment)
+                    {
+                        c = ((char)f.Read()).ToString();
+                        if (c == "}")
                         {
-                            c = ((char)f.Read()).ToString();
-                            if(c == "}")
-                            {
-                                isComment = false;
-                            }
-                            else if (c == "\n")
-                            {
-                                line++;
-                            }
+                            isComment = false;
                         }
-                        ch = ((char)f.Read()).ToString();
+                        else if (c == "\n")
+                        {
+                            line++;
+                        }
+                    }
+                    ch = ((char)f.Read()).ToString();
                 }
-                if (ch == "\n" ) line++;
-                else if(f.EndOfStream)
+                if (ch == "\n") line++;
+                else if (f.EndOfStream)
                 {
                     res.Name = "EOF";
                     res.Type = KeyWord.ltEOF;
@@ -170,7 +166,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == "(")
+                else if (ch == "(")
                 {
                     res.Name = "(";
                     res.Type = KeyWord.ltLBraket;
@@ -178,7 +174,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == ")")
+                else if (ch == ")")
                 {
                     res.Name = ")";
                     res.Type = KeyWord.ltRBraket;
@@ -186,7 +182,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == ";")
+                else if (ch == ";")
                 {
                     res.Name = ";";
                     res.Type = KeyWord.ltEndGroup;
@@ -194,7 +190,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == ",")
+                else if (ch == ",")
                 {
                     res.Name = ",";
                     res.Type = KeyWord.ltComma;
@@ -202,7 +198,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == "+")
+                else if (ch == "+")
                 {
                     res.Name = "+";
                     res.Type = KeyWord.ltAdd;
@@ -210,7 +206,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == "-")
+                else if (ch == "-")
                 {
                     res.Name = "-";
                     res.Type = KeyWord.ltSub;
@@ -218,7 +214,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == "*")
+                else if (ch == "*")
                 {
                     res.Name = "*";
                     res.Type = KeyWord.ltMul;
@@ -226,10 +222,10 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Line = line;
                     break;
                 }
-                else if(ch == "!")
+                else if (ch == "!")
                 {
                     string c = ((char)f.Read()).ToString();
-                    if(c == "!") // !!
+                    if (c == "!") // !!
                     {
                         res.Name = "!!";
                         res.Type = KeyWord.ltNot;
@@ -246,10 +242,10 @@ namespace SPZ_Course_Test.CodeAnalize
                         break;
                     }
                 }
-                else if(ch == "<")
+                else if (ch == "<")
                 {
                     string c = ((char)f.Read()).ToString();
-                    if(c == "-") // <<
+                    if (c == "-") // <<
                     {
                         res.Name = "<-";
                         res.Type = KeyWord.ltNewValue;
@@ -257,7 +253,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         res.Line = line;
                         break;
                     }
-                    else if(c == ">") // not equal
+                    else if (c == ">") // not equal
                     {
                         res.Name = "<>";
                         res.Type = KeyWord.ltNotEqu;
@@ -273,18 +269,18 @@ namespace SPZ_Course_Test.CodeAnalize
                         break;
                     }
                 }
-                else if(ch == "=")
+                else if (ch == "=")
                 {
-                       res.Name = "=";
-                       res.Type = KeyWord.ltEqu;
-                       res.Value = 0;
-                       res.Line = line;
-                       break;
+                    res.Name = "=";
+                    res.Type = KeyWord.ltEqu;
+                    res.Value = 0;
+                    res.Line = line;
+                    break;
                 }
-                else if(ch == "&")
+                else if (ch == "&")
                 {
                     string c = ((char)f.Read()).ToString();
-                    if(c == "&") // &&
+                    if (c == "&") // &&
                     {
                         res.Name = "&&";
                         res.Type = KeyWord.ltAnd;
@@ -321,7 +317,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         break;
                     }
                 }
-                else if((ch == "\"") && !(IsQuotes)) // text
+                else if ((ch == "\"") && !(IsQuotes)) // text
                 {
                     IsQuotes = true;
                     res.Name = "\"";
@@ -330,11 +326,11 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Value = 0;
                     break;
                 }
-                else if(Char.IsLetter(ch[0]))
+                else if (Char.IsLetter(ch[0]))
                 {
                     int i = 0;
                     buf[0] = ch[0];
-                    for(i = 1; ; ++i)
+                    for (i = 1; ; ++i)
                     {
                         ch = ((char)f.Peek()).ToString();
                         if (Char.IsDigit(ch[0]) || Char.IsLetter(ch[0]) || (ch == "_")) { buf[i] = ch[0]; f.Read(); }
@@ -344,19 +340,19 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Name = new string(buf).Substring(0, i);
 
                     string localBuf = new string(buf).Substring(0, i);
-                    if(localBuf == "PROGRAM")
+                    if (localBuf == "PROGRAM")
                     {
                         res.Type = KeyWord.ltProgram;
                         res.Line = line;
                         break;
                     }
-                    else if(localBuf == "VAR")
+                    else if (localBuf == "VAR")
                     {
                         res.Type = KeyWord.ltVar;
                         res.Line = line;
                         break;
                     }
-                    else if(localBuf == "BEGIN")
+                    else if (localBuf == "BEGIN")
                     {
                         res.Type = KeyWord.ltBegin;
                         res.Line = line;
@@ -416,7 +412,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         res.Line = line;
                         break;
                     }
-                    else if(Char.IsUpper(buf[0]) && (i < 8) || (TokensTable[ii - 1].Type == KeyWord.ltProgram))
+                    else if (Char.IsUpper(buf[0]) && (i < 8) || (TokensTable[ii - 1].Type == KeyWord.ltProgram))
                     {
                         res.Name = localBuf;
                         res.Type = KeyWord.ltIdentifier;
@@ -435,7 +431,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     res.Value = 0;
                     res.Line = line;
                 }
-                else if(ch == "-") // -
+                else if (ch == "-") // -
                 {
                     char c;
                     c = (char)f.Read();
@@ -444,7 +440,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         int i = 2;
                         buf[0] = ch[0];
                         buf[1] = c;
-                        for(; Char.IsDigit((ch = ((char)f.Peek()).ToString()).ElementAt(0)); ++i)
+                        for (; Char.IsDigit((ch = ((char)f.Peek()).ToString()).ElementAt(0)); ++i)
                         {
                             buf[i] = ch[0];
                             f.Read();
@@ -469,7 +465,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 {
                     int i = 1;
                     buf[0] = ch[0];
-                    for(; Char.IsDigit((ch = ((char)f.Peek()).ToString()).ElementAt(0)); ++i)
+                    for (; Char.IsDigit((ch = ((char)f.Peek()).ToString()).ElementAt(0)); ++i)
                     {
                         buf[i] = ch[0];
                         f.Read();
@@ -482,16 +478,16 @@ namespace SPZ_Course_Test.CodeAnalize
                     break;
 
                 }
-                else if((ch[0] != '\n') && (ch[0] != '\t') && (ch[0] != ' ') && (ch[0] != '\r'))
+                else if ((ch[0] != '\n') && (ch[0] != '\t') && (ch[0] != ' ') && (ch[0] != '\r'))
                 {
                     char[] buffer = new char[50];
                     char c;
                     int i;
                     buffer[0] = ch[0];
-                    for(i = 1; ; i++)
+                    for (i = 1; ; i++)
                     {
                         c = (char)f.Peek();
-                        if((c == '\n') || (c == '\t') || (c == ';'))
+                        if ((c == '\n') || (c == '\t') || (c == ';'))
                         {
                             if (c == '\n')
                             {
@@ -520,12 +516,12 @@ namespace SPZ_Course_Test.CodeAnalize
             KeyWordToken tempTokens = new KeyWordToken();
             int i = 0;
             int localLine = line;
-            char [] type = new char[50];
+            char[] type = new char[50];
             IsLetters = false;
             IsQuotes = false;
             do
             {
-                TokensTable.Add (new KeyWordToken());
+                TokensTable.Add(new KeyWordToken());
                 tempTokens = GetNextTokens(fi, i);
                 if (IsLetters)
                 {
@@ -565,23 +561,6 @@ namespace SPZ_Course_Test.CodeAnalize
                     i++;
                 }
 
-                if (localLine != line)
-                {
-                    Console.WriteLine("=".PadLeft(80, '='));
-                    localLine++;
-                    color = (ConsoleColor)((int)color + 1);
-                    if ((int)color > 15) color = ConsoleColor.Blue;
-                    Console.ForegroundColor = color;
-                }
-
-                //Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(i + ": " + TokensTable[i-1].Name.PadLeft(18));
-                Console.Write("\t" +  TokensTable[i-1].Value.ToString().PadLeft(10));
-                Console.Write("\t" + TokensTable[i-1].Type.ToString().PadLeft(18));
-                Console.Write("\t" + TokensTable[i-1].Line.ToString().PadLeft(4));
-                Console.Write("\t" + ((TokensTable[i - 1].Text != null ) ?  TokensTable[i - 1].Text.PadLeft(25) : ""));
-                Console.WriteLine();
-
             } while (tempTokens.Type != KeyWord.ltEOF);
             return TokensTable;
         }
@@ -603,12 +582,12 @@ namespace SPZ_Course_Test.CodeAnalize
         {
             int nom, error = 0;
             nom = i;
-            if((TokensTable[nom].Type != KeyWord.ltLBraket) && (TokensTable[nom].Type != KeyWord.ltIdentifier) && (TokensTable[nom].Type != KeyWord.ltNumber))
+            if ((TokensTable[nom].Type != KeyWord.ltLBraket) && (TokensTable[nom].Type != KeyWord.ltIdentifier) && (TokensTable[nom].Type != KeyWord.ltNumber))
             {
                 ef.Write($"line: {TokensTable[nom].Line}, Expression must begin from identifier, number or '('!\n");
                 error++;
             }
-            for(;(TokensTable[nom].Type == KeyWord.ltRBraket); nom++)
+            for (; (TokensTable[nom].Type == KeyWord.ltRBraket); nom++)
             {
                 if (TokensTable[nom].Type == KeyWord.ltRBraket)
                 {
@@ -620,7 +599,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 }
                 if (TokensTable[nom].Type == KeyWord.ltLBraket)
                 {
-                    if ((TokensTable[nom +1].Type != KeyWord.ltIdentifier) && (TokensTable[nom+1].Type != KeyWord.ltLBraket) && (TokensTable[nom +1 ].Type != KeyWord.ltNumber) && (TokensTable[nom +1].Type != KeyWord.ltNot))
+                    if ((TokensTable[nom + 1].Type != KeyWord.ltIdentifier) && (TokensTable[nom + 1].Type != KeyWord.ltLBraket) && (TokensTable[nom + 1].Type != KeyWord.ltNumber) && (TokensTable[nom + 1].Type != KeyWord.ltNot))
                     {
                         ef.Write($"line: {TokensTable[nom].Line}, After '(' must be '(' or identifier!\n ");
                         error++;
@@ -628,15 +607,15 @@ namespace SPZ_Course_Test.CodeAnalize
                 }
                 if (IsOperation(TokensTable[nom].Type))
                 {
-                    if((TokensTable[nom+1].Type != KeyWord.ltIdentifier) &&(TokensTable[nom+1].Type != KeyWord.ltLBraket) && (TokensTable[nom + 1].Type != KeyWord.ltNumber))
+                    if ((TokensTable[nom + 1].Type != KeyWord.ltIdentifier) && (TokensTable[nom + 1].Type != KeyWord.ltLBraket) && (TokensTable[nom + 1].Type != KeyWord.ltNumber))
                     {
                         ef.Write($"line: {TokensTable[nom].Line}, After operation must be '(' or idetifier!\n");
                         error++;
                     }
                 }
-                if((TokensTable[nom].Type == KeyWord.ltIdentifier) || (TokensTable[nom].Type == KeyWord.ltNumber))
+                if ((TokensTable[nom].Type == KeyWord.ltIdentifier) || (TokensTable[nom].Type == KeyWord.ltNumber))
                 {
-                    if(!(IsOperation(TokensTable[nom+1].Type)) && (TokensTable[nom+1].Type != KeyWord.ltRBraket) && (TokensTable[nom + 1].Type != KeyWord.ltEndGroup))
+                    if (!(IsOperation(TokensTable[nom + 1].Type)) && (TokensTable[nom + 1].Type != KeyWord.ltRBraket) && (TokensTable[nom + 1].Type != KeyWord.ltEndGroup))
                     {
                         ef.Write($"line: {TokensTable[nom].Line}, After identifier must be ')',';',or operation!\n");
                         error++;
@@ -652,15 +631,15 @@ namespace SPZ_Course_Test.CodeAnalize
             //ss.Push(-1);
             int j = 0, i;
             i = nom;
-            for(; TokensTable[i].Type != ends; i++)
+            for (; TokensTable[i].Type != ends; i++)
             {
                 if (TokensTable[i].Type == ltBegin)
                 {
                     ss.Push(i);
                 }
-                if(TokensTable[i].Type == ltEnd)
+                if (TokensTable[i].Type == ltEnd)
                 {
-                    if(ss.Count() == 0)
+                    if (ss.Count() == 0)
                     {
                         j = 1; // too much ')'
                         break;
@@ -668,7 +647,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     else
                     {
                         ss.Pop();
-                        if((TokensTable[nom - 2].Type == KeyWord.ltType) && (ss.Count() == 0))
+                        if ((TokensTable[nom - 2].Type == KeyWord.ltType) && (ss.Count() == 0))
                         {
                             j = 3;
                             break;
@@ -676,7 +655,7 @@ namespace SPZ_Course_Test.CodeAnalize
                     }
                 }
             }
-            if(ss.Count() != 0)
+            if (ss.Count() != 0)
             {
                 j = 2;
             }
@@ -690,11 +669,10 @@ namespace SPZ_Course_Test.CodeAnalize
             return errorPattern;
         }
 
-        public static int ErrorChecking()
+        public static int ErrorChecking(StreamWriter ef)
         {
             int label = 0;
             int i = 0, j = 1, temp = 0, ValNum = 0;
-            StreamWriter ef = new StreamWriter(@"c:\log\errorReport.txt");
 
             int Err;
             int while_num = 0, STARTBLOK_ENDBLOK_num = 0;//, r1, r2;
@@ -707,16 +685,16 @@ namespace SPZ_Course_Test.CodeAnalize
             IdentTable.Add(new Identifier());
             NumberOfTokens = TokensTable.Count();
 
-           
+
 
             //перевірка чи першим словом у програмі є program
-            if(TokensTable[0].Type != KeyWord.ltProgram)
+            if (TokensTable[0].Type != KeyWord.ltProgram)
             {
                 Err_num++;
                 ef.WriteLine(ErrorPatern(Err_num, line, "\t'Program' expected! (program must begin from the keyword 'Program')"));
             }
             //перевірка, чи другим словом в програмі є ім'я програми
-            if(TokensTable[1].Type != KeyWord.ltIdentifier)
+            if (TokensTable[1].Type != KeyWord.ltIdentifier)
             {
                 Err_num++;
                 ef.WriteLine(ErrorPatern(Err_num, line, "\tProgram name expected!"));
@@ -730,7 +708,7 @@ namespace SPZ_Course_Test.CodeAnalize
             if (TokensTable[4].Type != KeyWord.ltVar)
             {
                 Err_num++;
-                ef.WriteLine(ErrorPatern(Err_num, line , "\t'Var' expected!"));
+                ef.WriteLine(ErrorPatern(Err_num, line, "\t'Var' expected!"));
             }
 
             if (TokensTable[4].Type == KeyWord.ltVar)
@@ -752,7 +730,7 @@ namespace SPZ_Course_Test.CodeAnalize
                             NumberOfIdent++;
                             i = i + 2;
                         }
-                    } while ((TokensTable[i].Type ==  KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltComma));
+                    } while ((TokensTable[i].Type == KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltComma));
                     if ((TokensTable[i].Type == KeyWord.ltIdentifier) && (TokensTable[i + 1].Type == KeyWord.ltType))
                     {
                         IdentTable.Add(new Identifier());
@@ -806,13 +784,13 @@ namespace SPZ_Course_Test.CodeAnalize
                 Err_num++;
                 ef.WriteLine(ErrorPatern(Err_num, line, "\tEnd of file expected!"));
             }
-            for (j = 0; TokensTable[j].Type !=  KeyWord.ltBegin; j++) ;
+            for (j = 0; TokensTable[j].Type != KeyWord.ltBegin; j++) ;
             Err = Balans(j - 1, KeyWord.ltEOF, KeyWord.ltBegin, KeyWord.ltEnd);
             if (Err == 1)
             {
                 Err_num++;
-                ef.WriteLine(ErrorPatern(Err_num , line, "\tToo much 'BEGIN'!"));
-               
+                ef.WriteLine(ErrorPatern(Err_num, line, "\tToo much 'BEGIN'!"));
+
             }
             if (Err == 2)
             {
@@ -844,10 +822,10 @@ namespace SPZ_Course_Test.CodeAnalize
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tUnknown identifier! ") + TokensTable[j].Name);
                     }
                 }
-                if (TokensTable[j].Type ==  KeyWord.ltNewValue)
+                if (TokensTable[j].Type == KeyWord.ltNewValue)
                 {
                     int buf;
-                    BraketErr = Balans(j,  KeyWord.ltEndGroup, KeyWord.ltLBraket, KeyWord.ltRBraket);
+                    BraketErr = Balans(j, KeyWord.ltEndGroup, KeyWord.ltLBraket, KeyWord.ltRBraket);
                     if (BraketErr == 1)                     //Баланс дужок після знаку <-
                     {
                         Err_num++;
@@ -862,17 +840,17 @@ namespace SPZ_Course_Test.CodeAnalize
                     else buf = 0;
                     Err_num = Err_num + buf;
                 }
-                if (TokensTable[j].Type ==  KeyWord.ltWrite) //перевірка правильності виклику виводу на екран
+                if (TokensTable[j].Type == KeyWord.ltWrite) //перевірка правильності виклику виводу на екран
                 {
                     int buf, brak;
-                    if (TokensTable[j + 1].Type !=  KeyWord.ltLBraket)
+                    if (TokensTable[j + 1].Type != KeyWord.ltLBraket)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "tToo much ')'!"));
                     }
                     //buf = IsExpression((j+1),ef);
                     //Err_num=Err_num+buf;
-                    brak = Balans(j,  KeyWord.ltEndGroup, KeyWord.ltLBraket, KeyWord.ltRBraket);
+                    brak = Balans(j, KeyWord.ltEndGroup, KeyWord.ltLBraket, KeyWord.ltRBraket);
                     if (brak == 1)
                     {
                         Err_num++;
@@ -883,12 +861,12 @@ namespace SPZ_Course_Test.CodeAnalize
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[i].Line, "\t')' expected!"));
                     }
-                    if (TokensTable[j + 2].Type ==  KeyWord.ltQuotes)
+                    if (TokensTable[j + 2].Type == KeyWord.ltQuotes)
                     {
                         //о
                         string tmp;
                         j = j + 2;
-                        if (TokensTable[j + 1].Type ==  KeyWord.ltLetters)
+                        if (TokensTable[j + 1].Type == KeyWord.ltLetters)
                         {
                             tmp = "line" + NumberOfLetters.ToString();
                             LettersTable.Add(new Letters());
@@ -902,68 +880,68 @@ namespace SPZ_Course_Test.CodeAnalize
                             ef.WriteLine(ErrorPatern(Err_num, line, "\t\" expected!"));
                         }
                     }
-                    if (TokensTable[j + 3].Type ==  KeyWord.ltIdentifier)
+                    if (TokensTable[j + 3].Type == KeyWord.ltIdentifier)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\t, expected!"));
                     }
-                    if (TokensTable[j + 3].Type ==  KeyWord.ltComma)
+                    if (TokensTable[j + 3].Type == KeyWord.ltComma)
                     {
                         j = j + 3;
-                        if (TokensTable[j + 1].Type !=  KeyWord.ltIdentifier)
+                        if (TokensTable[j + 1].Type != KeyWord.ltIdentifier)
                         {
                             Err_num++;
                             ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tIdentifier expected!"));
                         }
                     }
                 }
-                if (TokensTable[j].Type ==  KeyWord.ltRead)
+                if (TokensTable[j].Type == KeyWord.ltRead)
                 {
-                    if (TokensTable[j + 1].Type !=  KeyWord.ltLBraket)
+                    if (TokensTable[j + 1].Type != KeyWord.ltLBraket)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 1].Line, "\t'(' expected!"));
                     }
-                    if (TokensTable[j + 2].Type !=  KeyWord.ltIdentifier)
+                    if (TokensTable[j + 2].Type != KeyWord.ltIdentifier)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 2].Line, "\tIdentifier expected!"));
                     }
-                    if (TokensTable[j + 3].Type !=  KeyWord.ltRBraket)
+                    if (TokensTable[j + 3].Type != KeyWord.ltRBraket)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 3].Line, "\t')' expected!"));
                     }
-                    if (TokensTable[j + 4].Type !=  KeyWord.ltEndGroup)
+                    if (TokensTable[j + 4].Type != KeyWord.ltEndGroup)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\t';' expected!"));
                     }
                 }
-                if (TokensTable[j].Type ==  KeyWord.ltWhile)               //перевірка WHILE
+                if (TokensTable[j].Type == KeyWord.ltWhile)               //перевірка WHILE
                 {
-                    if(TokensTable[j+1].Type != KeyWord.ltLBraket)
+                    if (TokensTable[j + 1].Type != KeyWord.ltLBraket)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\'(\' after WHILE expected!"));
                     }
-                    if(TokensTable[j+2].Type != KeyWord.ltIdentifier)
+                    if (TokensTable[j + 2].Type != KeyWord.ltIdentifier)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
                     }
-                    if(TokensTable[j+4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber)
+                    if (TokensTable[j + 4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier or number in WHILE () expected!"));
                     }
-                    if(TokensTable[j+5].Type != KeyWord.ltRBraket)
+                    if (TokensTable[j + 5].Type != KeyWord.ltRBraket)
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\')\' after WHILE expected!"));
                     }
                 }
-                if (TokensTable[j].Type ==  KeyWord.ltEOF) break;
+                if (TokensTable[j].Type == KeyWord.ltEOF) break;
             }
             if (Err_num == 0) ; // implement
             ef.Close();
@@ -1025,11 +1003,11 @@ namespace SPZ_Course_Test.CodeAnalize
             do
             {
                 ++i;
-            } while (TokensTable[i - 1].Type !=  KeyWord.ltBegin);
-            for (; TokensTable[i].Type !=  KeyWord.ltEOF; ++i)
+            } while (TokensTable[i - 1].Type != KeyWord.ltBegin);
+            for (; TokensTable[i].Type != KeyWord.ltEOF; ++i)
             {
-                if (TokensTable[i].Type ==  KeyWord.ltRead) IsPresentInput = true;
-                if (TokensTable[i].Type ==  KeyWord.ltWrite) IsPresentOutput = true;
+                if (TokensTable[i].Type == KeyWord.ltRead) IsPresentInput = true;
+                if (TokensTable[i].Type == KeyWord.ltWrite) IsPresentOutput = true;
                 if (IsPresentInput && IsPresentOutput) break;
             }
         }
@@ -1046,46 +1024,46 @@ namespace SPZ_Course_Test.CodeAnalize
                 f.WriteLine("\tmov ax,z"); f.WriteLine("\tmov dx,z+2"); f.WriteLine("ENDM");
             }
 
-                int i;
-                f.WriteLine(";======Declaration of variables =======");
+            int i;
+            f.WriteLine(";======Declaration of variables =======");
 
-                for (i = 1; i < NumberOfIdent; ++i)
+            for (i = 1; i < NumberOfIdent; ++i)
+            {
+                f.WriteLine($"\t{IdentTable[i].Name}\tdd\t0{IdentTable[i].Value}h");
+            }
+            f.WriteLine("\tlb1\tdw\t0h"); //Змінні для обробки логічних операцій
+            f.WriteLine("\tlb2\tdw\t0h");
+            f.WriteLine("\tbuf_if\tdw\t0h");
+            f.WriteLine("\tbuf\tdd\t0\n\trc\tdw\t0");
+            if (IsPresentInput)
+            {
+                f.WriteLine(";======Data for Get() functions========\n");
+                f.WriteLine("\terFlag db 0");
+                f.WriteLine("\tTStr db 10 dup (0)");
+                f.WriteLine("\tTBin dw 0,0");
+                f.WriteLine("\tMaxLen dw 0");
+                f.WriteLine("\tFlagS db 0");
+                f.WriteLine("\tMul10 dw 1,0");
+                f.WriteLine("\tmy_z dw 0,0");
+                f.WriteLine("\terStr1 db 13,10,'Data not input_variable',13,10,'$'");
+                f.WriteLine("\terStr2 db 13,10,'Incorrectly data ',13,10,'$'");
+                f.WriteLine("\terStr3 db 13,10,'Data is too long ',13,10,'$'");
+            }
+            if (IsPresentOutput)
+            {
+                f.WriteLine(";=======Data for Put() functions=======\n");
+                f.WriteLine("\tMSign\tdb\t\'+\',\'$\'");
+                f.WriteLine("\tX_Str\tdb\t12 dup (0)");
+                f.WriteLine("\tten\tdw\t10");
+                f.WriteLine("\tX1\tdw\t0h");
+                f.WriteLine("\tMX1\tdb\t13,10,\'>> $\'");
+                f.WriteLine("\tper\tdb\t10,13,\'$\'");
+                for (i = 0; i < NumberOfLetters; i++)
                 {
-                    f.WriteLine( $"\t{IdentTable[i].Name}\tdd\t0{IdentTable[i].Value}h");
-                }
-                f.WriteLine("\tlb1\tdw\t0h"); //Змінні для обробки логічних операцій
-                f.WriteLine("\tlb2\tdw\t0h");
-                f.WriteLine("\tbuf_if\tdw\t0h");
-                f.WriteLine("\tbuf\tdd\t0\n\trc\tdw\t0");
-                if (IsPresentInput)
-                {
-                    f.WriteLine(";======Data for Get() functions========\n");
-                    f.WriteLine("\terFlag db 0");
-                    f.WriteLine("\tTStr db 10 dup (0)");
-                    f.WriteLine("\tTBin dw 0,0");
-                    f.WriteLine("\tMaxLen dw 0");
-                    f.WriteLine("\tFlagS db 0");
-                    f.WriteLine("\tMul10 dw 1,0");
-                    f.WriteLine("\tmy_z dw 0,0");
-                    f.WriteLine("\terStr1 db 13,10,'Data not input_variable',13,10,'$'");
-                    f.WriteLine("\terStr2 db 13,10,'Incorrectly data ',13,10,'$'");
-                    f.WriteLine("\terStr3 db 13,10,'Data is too long ',13,10,'$'");
-                }
-                if (IsPresentOutput)
-                {
-                    f.WriteLine(";=======Data for Put() functions=======\n");
-                    f.WriteLine("\tMSign\tdb\t\'+\',\'$\'");
-                    f.WriteLine("\tX_Str\tdb\t12 dup (0)");
-                    f.WriteLine("\tten\tdw\t10");
-                    f.WriteLine("\tX1\tdw\t0h");
-                    f.WriteLine("\tMX1\tdb\t13,10,\'>> $\'");
-                    f.WriteLine("\tper\tdb\t10,13,\'$\'");
-                    for (i = 0; i < NumberOfLetters; i++)
-                    {
-                        f.WriteLine($"\t{LettersTable[i].Name}\tdb\t\'{LettersTable[i].Text}\',\'$\'");
-                    };
-                }
-            
+                    f.WriteLine($"\t{LettersTable[i].Name}\tdb\t\'{LettersTable[i].Text}\',\'$\'");
+                };
+            }
+
         }
 
         public static void BeginCodeSegm(StreamWriter f)
@@ -1104,31 +1082,31 @@ namespace SPZ_Course_Test.CodeAnalize
             do
             {
                 ++i;
-            } while (TokensTable[i].Type !=  KeyWord.ltBegin);
+            } while (TokensTable[i].Type != KeyWord.ltBegin);
             i++;
-            if (TokensTable[i].Type ==  KeyWord.ltVar)
+            if (TokensTable[i].Type == KeyWord.ltVar)
             {
                 do
                 {
                     i++;
-                } while (TokensTable[i].Type !=  KeyWord.ltEndGroup);
+                } while (TokensTable[i].Type != KeyWord.ltEndGroup);
                 i++;
             }
 
             CucleStack = new Stack<int>();
             StartBlockStack = new Stack<int>();
-            for(; ;++i)
+            for (; ; ++i)
             {
                 labelnom = 0;
                 l.Type = TokensTable[i].Type;
                 l.Name = TokensTable[i].Name;
                 l.Value = TokensTable[i].Value;
                 if (l.Type == KeyWord.ltEOF) break;
-                if(l.Type == KeyWord.ltBegin)
+                if (l.Type == KeyWord.ltBegin)
                 {
                     StartBlockStack.Push(++lab);
                 }
-                if ((l.Type ==  KeyWord.ltEnd) && (TokensTable[i + 1].Type != KeyWord.ltEOF))
+                if ((l.Type == KeyWord.ltEnd) && (TokensTable[i + 1].Type != KeyWord.ltEOF))
                 {
                     if (StartBlockStack.Peek() >= 0)
                     {
@@ -1137,7 +1115,7 @@ namespace SPZ_Course_Test.CodeAnalize
                         f.WriteLine("\tdec ax\n");
                         f.WriteLine($"\tmov word ptr {TokensTable[temp].Name}, ax");
                         temp = StartBlockStack.Pop();
-                        f.WriteLine( $"\tjmp forStart{temp}");
+                        f.WriteLine($"\tjmp forStart{temp}");
                         f.WriteLine($"forFinish{temp}:");
                     }
                     else
@@ -1145,9 +1123,9 @@ namespace SPZ_Course_Test.CodeAnalize
                         StartBlockStack.Pop();
                     }
                 }
-                if (l.Type ==  KeyWord.ltWrite)    //write
+                if (l.Type == KeyWord.ltWrite)    //write
                 {
-                    if (TokensTable[i + 2].Type ==  KeyWord.ltQuotes)
+                    if (TokensTable[i + 2].Type == KeyWord.ltQuotes)
                     {
                         if (TokensTable[i + 3].Text.Length == 0)
                         {
@@ -1156,35 +1134,35 @@ namespace SPZ_Course_Test.CodeAnalize
                         }
                         else
                         {
-                            f.WriteLine( $"\tlea dx,{LettersTable[CurrLet].Name}");
+                            f.WriteLine($"\tlea dx,{LettersTable[CurrLet].Name}");
                             f.WriteLine("\tmov ah,09\n\tint 21h");
                         }
                         CurrLet++;
                         i += 4;
-                        if (TokensTable[i + 1].Type ==  KeyWord.ltComma)
+                        if (TokensTable[i + 1].Type == KeyWord.ltComma)
                         {
-                            f.WriteLine($"\tfild {TokensTable[i+2].Name}");
-                            f.WriteLine( "\tfistp buf");
+                            f.WriteLine($"\tfild {TokensTable[i + 2].Name}");
+                            f.WriteLine("\tfistp buf");
                             f.WriteLine("\tcall output");
                             i += 4;
                         }
-                        if (TokensTable[i + 1].Type ==  KeyWord.ltRBraket)
+                        if (TokensTable[i + 1].Type == KeyWord.ltRBraket)
                         {
                             i += 2;
                         }
                     }
-                    if (TokensTable[i + 2].Type ==  KeyWord.ltIdentifier)
+                    if (TokensTable[i + 2].Type == KeyWord.ltIdentifier)
                     {
                         i = ConvertToPostfixForm(i + 1);
                         GenASMCode("buf", f);
                         f.WriteLine("\tcall output", f);
                     }
                 }
-                if (l.Type ==  KeyWord.ltRead)
+                if (l.Type == KeyWord.ltRead)
                 {
                     f.WriteLine("\tcall input");
-                    f.WriteLine( "\tfild buf");
-                    f.WriteLine( $"\tfistp {TokensTable[i+2].Name}");
+                    f.WriteLine("\tfild buf");
+                    f.WriteLine($"\tfistp {TokensTable[i + 2].Name}");
                     i += 4;
                 }
                 //if (l.Type ==  KeyWord.ltFor)
@@ -1250,22 +1228,22 @@ namespace SPZ_Course_Test.CodeAnalize
             for (n = 0; BufExprPostfixForm[n] != 3000; ++n)
             {
                 //puts("pf");
-                if ((!IsOperation(TokensTable[BufExprPostfixForm[n]].Type)) && (TokensTable[BufExprPostfixForm[n]].Type !=  KeyWord.ltNot))
+                if ((!IsOperation(TokensTable[BufExprPostfixForm[n]].Type)) && (TokensTable[BufExprPostfixForm[n]].Type != KeyWord.ltNot))
                 {
-                    if (TokensTable[BufExprPostfixForm[n]].Type ==  KeyWord.ltIdentifier)
+                    if (TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltIdentifier)
                     {
-                        f.Write( $"\tfild { TokensTable[BufExprPostfixForm[n]].Name}\n");
+                        f.Write($"\tfild { TokensTable[BufExprPostfixForm[n]].Name}\n");
                     }
-                    else if (TokensTable[BufExprPostfixForm[n]].Type ==  KeyWord.ltNumber)
+                    else if (TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltNumber)
                     {
-                        char []buf = new char[10];
+                        char[] buf = new char[10];
                         buf[0] = '0';
                         buf[1] = (char)TokensTable[BufExprPostfixForm[5]].Value.ToString("%04x")[0];
                         buf[6] = '\0';
-                        f.Write( $"\tmov word ptr buf,{new string(buf)}h\n", buf);
+                        f.Write($"\tmov word ptr buf,{new string(buf)}h\n", buf);
                         f.Write("\tfild buf\n");
                     }
-                    else if ((TokensTable[BufExprPostfixForm[n]].Type ==  KeyWord.ltLBraket) || (TokensTable[BufExprPostfixForm[n]].Type ==  KeyWord.ltRBraket))
+                    else if ((TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltLBraket) || (TokensTable[BufExprPostfixForm[n]].Type == KeyWord.ltRBraket))
                     {
                         continue;
                     }
@@ -1274,7 +1252,7 @@ namespace SPZ_Course_Test.CodeAnalize
                 {
                     switch (TokensTable[BufExprPostfixForm[n]].Type)
                     {
-                        case  KeyWord.ltAdd: f.Write("\tfadd\n"); break;
+                        case KeyWord.ltAdd: f.Write("\tfadd\n"); break;
                         case KeyWord.ltSub: f.Write("\tfsub\n"); break;
                         case KeyWord.ltDiv: f.Write("\tfdiv\n"); break;
                         case KeyWord.ltMod: f.Write("\tcall mod_\n"); break;
@@ -1298,14 +1276,14 @@ namespace SPZ_Course_Test.CodeAnalize
         {
             int n, z;
             n = 0;
-            for (; (TokensTable[i + n].Type !=  KeyWord.ltEndGroup); ++n) ;      //Встановлення коректності та довжини вхідного масиву
+            for (; (TokensTable[i + n].Type != KeyWord.ltEndGroup); ++n) ;      //Встановлення коректності та довжини вхідного масиву
             int k;
             k = i + n;
             for (z = 0; i < k; ++i)
             {
                 KeyWord inVar;
                 inVar = TokensTable[i].Type;
-                if ((inVar ==  KeyWord.ltIdentifier) || (inVar ==  KeyWord.ltNumber) || (inVar == KeyWord.ltNot))
+                if ((inVar == KeyWord.ltIdentifier) || (inVar == KeyWord.ltNumber) || (inVar == KeyWord.ltNot))
                 {
                     BufExprPostfixForm[z] = i;
                     ++z;
@@ -1318,30 +1296,30 @@ namespace SPZ_Course_Test.CodeAnalize
                     }
                     else
                     {
-                        if (TokensTable[StackStack.Peek()].Type !=  KeyWord.ltLBraket)
+                        if (TokensTable[StackStack.Peek()].Type != KeyWord.ltLBraket)
                         {
                             do
                             {
                                 BufExprPostfixForm[z] = StackStack.Pop();
                                 ++z;
-                            } while ((!(Prioritet(inVar, StackStack))) && (!(StackStack.Count == 0) && (TokensTable[StackStack.Peek()].Type !=  KeyWord.ltLBraket)));
+                            } while ((!(Prioritet(inVar, StackStack))) && (!(StackStack.Count == 0) && (TokensTable[StackStack.Peek()].Type != KeyWord.ltLBraket)));
                         }
                         StackStack.Push(i);
                     }
                 }
-                if (inVar ==  KeyWord.ltLBraket)
-		        {
+                if (inVar == KeyWord.ltLBraket)
+                {
                     StackStack.Push(i);
                     BufExprPostfixForm[z] = i;
                     ++z;
                 }
-                if (inVar ==  KeyWord.ltRBraket)
-		        {
-                    for (; (TokensTable[StackStack.Peek()].Type !=  KeyWord.ltLBraket);)
-                     {
+                if (inVar == KeyWord.ltRBraket)
+                {
+                    for (; (TokensTable[StackStack.Peek()].Type != KeyWord.ltLBraket);)
+                    {
                         BufExprPostfixForm[z] = StackStack.Pop();  //stackStack.S.st[stackStack.S.top];
                         ++z;
-                     }
+                    }
                     StackStack.Pop();
                     BufExprPostfixForm[z] = i;
                     ++z;
@@ -1404,7 +1382,7 @@ namespace SPZ_Course_Test.CodeAnalize
             do
             {
                 ++i;
-            } while (TokensTable[i-1].Type != KeyWord.ltBegin);
+            } while (TokensTable[i - 1].Type != KeyWord.ltBegin);
 
             for (; TokensTable[i - 1].Type != KeyWord.ltEOF; ++i)
             {
@@ -1414,5 +1392,5 @@ namespace SPZ_Course_Test.CodeAnalize
             }
         }
     }
-
 }
+

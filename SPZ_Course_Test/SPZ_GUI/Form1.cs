@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPZ_GUI.ASM;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace SPZ_GUI
     public partial class SP_Course : Form
     {
         private readonly string newFile = "NewFile";
+        private readonly string errorReport = "errorReport.txt";
         public SP_Course()
         {
             InitializeComponent();
@@ -174,6 +176,83 @@ namespace SPZ_GUI
                 return;
             }
             // build file
+            // get token list
+            List<KeyWordToken> keyWordTokens = new List<KeyWordToken>();
+            try
+            {
+                using (StreamReader reader = new StreamReader(labelFileName.Text)) 
+                {
+                    keyWordTokens = Analize.AnalisisTokens(reader);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"System Error: {ex}");
+                return;
+            }
+            // create resources folder
+            var localFolder = Path.GetDirectoryName(labelFileName.Text);
+            string resourceFolder = localFolder + "\\" + Path.GetFileNameWithoutExtension(labelFileName.Text);
+            Directory.CreateDirectory(resourceFolder);
+
+            // error checking
+            string errorMessages = "";
+            int errorNumber = 0;
+            string errorFilePath = Path.Combine(resourceFolder, errorReport);
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(errorFilePath))
+                {
+                    errorNumber = Analize.ErrorChecking(writer);
+                }
+                using (StreamReader reader = new StreamReader(errorFilePath))
+                {
+                    errorMessages = reader.ReadToEnd();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"System Error: {ex}");
+                return;
+            }
+
+            // check if error exists
+            if(errorNumber != 0)
+            {
+                // show form with error and tokens
+                BuildForm buildForm = new BuildForm();
+                buildForm.lexemGrid.DataSource = keyWordTokens;
+                buildForm.errorOutput.Text = errorMessages;
+                buildForm.fileLink.Enabled = false;
+                buildForm.runButton.Enabled = false;
+                buildForm.Show();
+            }
+            else
+            {
+                // show form with error and tokens
+                BuildForm buildForm = new BuildForm();
+                buildForm.lexemGrid.DataSource = keyWordTokens;
+                buildForm.errorOutput.Text = "Error not found.";
+                buildForm.fileLink.Enabled = true;
+                buildForm.fileResources = resourceFolder;
+
+                buildForm.Show();
+
+                // generate code
+                string codeFile = resourceFolder + "\\" + Path.GetFileNameWithoutExtension(labelFileName.Text) + ".asm";
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(codeFile))
+                    {
+                        Analize.GenerateCode(writer);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Asm code was not generated: {ex.Message}");
+                    return;
+                }
+            }
         }
     }
 }

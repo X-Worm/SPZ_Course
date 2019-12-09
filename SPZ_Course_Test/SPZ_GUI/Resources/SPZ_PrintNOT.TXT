@@ -1,0 +1,17 @@
+;===Procedure ltNot====================
+ltNot PROC
+	push ax
+	pushf
+	fistp lb1
+	mov ax,lb1
+	cmp ax,0
+	jne is_true
+	fld1
+	jmp l_not
+is_true:
+	fldz
+l_not:
+	popf
+	pop ax
+	ret
+ltNot ENDP

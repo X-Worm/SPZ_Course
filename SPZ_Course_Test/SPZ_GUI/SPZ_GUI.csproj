@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASM\Analize.cs" />
+    <Compile Include="ASM\AsmFileFiller.cs" />
+    <Compile Include="ASM\Identifier.cs" />
+    <Compile Include="ASM\KeyWord.cs" />
+    <Compile Include="ASM\KeyWordToken.cs" />
+    <Compile Include="ASM\Letters.cs" />
     <Compile Include="BuildForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RunAndBuild.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPZ_Course_Test\SPZ_Course_Test.csproj">
+      <Project>{1e6a13c7-6a44-4c37-a8aa-fb553eb55ab3}</Project>
+      <Name>SPZ_Course_Test</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\run_exit_2-512.png" />
+    <Content Include="Resources\SPZ_PrintAND.TXT" />
+    <Content Include="Resources\SPZ_PrintEQ.TXT" />
+    <Content Include="Resources\SPZ_PrintGE.TXT" />
+    <Content Include="Resources\SPZ_PrintLE.TXT" />
+    <Content Include="Resources\SPZ_PrintMOD.TXT" />
+    <Content Include="Resources\SPZ_PrintNOT.TXT" />
+    <Content Include="Resources\SPZ_PrintOR.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

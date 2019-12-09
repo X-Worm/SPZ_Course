@@ -1,0 +1,25 @@
+;===Procedure ltOr======================
+ltOr PROC
+	push ax
+	push dx
+	pushf
+	fistp lb1
+	fist lb2
+	mov ax,lb1
+	cmp ax,0
+	jnz true_or
+	mov ax,lb2
+	cmp ax,0
+	jnz true_or
+	fldz
+	jmp l_or
+
+	true_or:
+	fld1
+
+	l_or:
+	popf
+	pop dx
+	pop ax
+	ret
+ltOr ENDP

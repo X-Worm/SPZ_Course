@@ -1,0 +1,19 @@
+;===Procedure eq_======================
+eq_ PROC
+	push ax
+	push dx
+	pushf
+	fistp lb1
+	fistp lb2
+	mov ax,lb1
+	mov dx,lb2
+	cmp ax,dx
+	jne not_eq
+	fld1
+	jmp l_eq
+not_eq: fldz
+l_eq:	popf
+	pop dx
+	pop ax
+ret
+eq_ ENDP

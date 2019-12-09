@@ -1,0 +1,19 @@
+;===Procedure ltGreate======================
+ltGreate PROC
+	push ax
+	push dx
+	pushf
+	fistp lb1
+	fistp lb2
+	mov ax,lb1
+	mov dx,lb2
+	cmp dx,ax
+	jl lov
+	fld1
+	jmp l_ge
+lov:	fldz
+l_ge:	popf
+	pop dx
+	pop ax
+	ret
+ltGreate ENDP

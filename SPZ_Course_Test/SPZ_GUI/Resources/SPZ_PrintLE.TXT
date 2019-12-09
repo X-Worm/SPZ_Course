@@ -1,0 +1,22 @@
+;===Procedure ltLess======================
+ltLess PROC
+	push ax
+	push dx
+	pushf
+	fistp lb1
+	fistp lb2
+	mov ax, lb1
+	mov dx, lb2
+	cmp dx,ax
+	jg gr
+lo:
+	fld1
+	jmp l_le
+gr:
+	fldz
+	l_le:
+	popf
+	pop dx
+	pop ax
+	ret
+ltLess ENDP
