@@ -52,10 +52,14 @@ namespace SPZ_GUI
                     return;
                 }
 
+                string filePath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string resPath = string.Format("{0}Resources\\", Path.GetFullPath(Path.Combine(filePath, @"..\..\")));
+
                 // generate the bat file to assemble code
                 string codeBat = fileResources + "\\" + "tasmFile.bat";
                 using (StreamWriter writer = new StreamWriter(codeBat))
                 {
+                    //writer.WriteLine("cd " + resPath);
                     string tasmCommand = $"tasm {asmFile}";
                     writer.WriteLine(tasmCommand);
                 }
@@ -82,6 +86,7 @@ namespace SPZ_GUI
                 string exeBat = fileResources + "\\" + "tlinkFile.bat";
                 using (StreamWriter writer = new StreamWriter(exeBat))
                 {
+                   // writer.WriteLine("cd " + resPath);
                     string tlinkCommand = $"tlink {asmObjFile}";
                     writer.WriteLine(tlinkCommand);
                 }

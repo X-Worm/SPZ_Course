@@ -925,16 +925,16 @@ namespace SPZ_GUI.ASM
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\'(\' after WHILE expected!"));
                     }
-                    if (TokensTable[j + 2].Type != KeyWord.ltIdentifier)
-                    {
-                        Err_num++;
-                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
-                    }
-                    if (TokensTable[j + 4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber)
-                    {
-                        Err_num++;
-                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier or number in WHILE () expected!"));
-                    }
+                    //if (TokensTable[j + 2].Type != KeyWord.ltIdentifier)
+                    //{
+                    //    Err_num++;
+                    //    ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
+                    //}
+                    //if (TokensTable[j + 4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber)
+                    //{
+                    //    Err_num++;
+                    //    ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier or number in WHILE () expected!"));
+                    //}
                     if (TokensTable[j + 5].Type != KeyWord.ltRBraket)
                     {
                         Err_num++;
@@ -1165,47 +1165,54 @@ namespace SPZ_GUI.ASM
                     f.WriteLine($"\tfistp {TokensTable[i + 2].Name}");
                     i += 4;
                 }
-                //if (l.Type ==  KeyWord.ltFor)
-                //{
-                //    CucleStack.Push(i + 1);
-                //    if (TokensTable[i + 3].Type ==  KeyWord.ltNumber)
-                //    {
-                //        char []buf = new char[10];
-                //        buf[0] = '0';
-                //        buf[1] = (char)TokensTable[i + 3].Value.ToString("%04x")[0];
-                //        //sprintf(&buf[1], "%04x", TokensTable[i + 3].value);
-                //        buf[6] = '\0';
-                //        f.WriteLine($"\tmov word ptr buf,{new string(buf)}h");
-                //        f.Write("\tfild buf");
-                //    }
-                //    else
-                //    {
-                //        f.Write( $"\tfild {TokensTable[i+3].Name}\n");
-                //    }
-                //    f.Write($"\tfistp {TokensTable[i+1].Name}\n");
-                //    f.Write($"forStart{lab + 1}:\n");
-                //    f.Write($"\tfild {TokensTable[i+1].Name}\n");
-                //    if (TokensTable[i + 5].Type ==  KeyWord.ltNumber)
-                //    {
-                //        char []buf = new char[10];
-                //        buf[0] = '0';
-
-                //        buf[1] = (char)TokensTable[i + 5].Value.ToString("%04x")[0];
-                //        //sprintf(&buf[1], "%04x", TokensTable[i + 5].value);
-                //        buf[6] = '\0';
-                //        f.Write($"\tmov word ptr buf,{new string(buf)}h\n");
-                //        f.Write("\tfild buf\n");
-                //    }
-                //    else
-                //    {
-                //        f.Write($"\tfild {TokensTable[i + 5].Name}\n");
-                //    }
-                //    f.Write("\tcall ltGreate\n");
-                //    f.Write("\tfistp buf\n");
-                //    f.Write("\tmov ax,word ptr buf\n");
-                //    f.Write("\tcmp ax,0\n");
-                //    f.Write($"\tjz forFinish{lab + 1}\n");
-                //}
+                if (l.Type == KeyWord.ltWhile)
+                {
+                    CucleStack.Push(i + 2);
+                    if (TokensTable[i + 2].Type ==  KeyWord.ltNumber)
+                    {
+                        string buf = $"0{TokensTable[i + 2].Value:X4}";
+                        f.Write($"\tmov word ptr buf,{buf}h\n");
+                        f.Write("\tfild buf\n");
+                    }
+                    else
+                    {
+                        f.Write($"\tfild {TokensTable[i + 2].Name}\n");
+                    }
+                    f.Write($"\tfistp {TokensTable[i + 2].Name}\n");
+                    f.Write($"forStart{lab + 1}:\n");
+                    f.Write($"\tfild {TokensTable[i + 2].Name}\n");
+                    if (TokensTable[i + 4].Type == KeyWord.ltNumber)
+                    {
+                        string buf = $"0{TokensTable[i + 4].Value:X4}";
+                        f.Write($"\tmov word ptr buf,{buf}h\n");
+                        f.Write("\tfild buf\n");
+                    }
+                    else
+                    {
+                        f.Write($"\tfild {TokensTable[i + 4].Name}\n");
+                    }
+                    switch (TokensTable[i + 3].Type)
+                    {
+                        case KeyWord.ltEqu:
+                            f.Write("\tcall eq_\n");
+                            break;
+                        case KeyWord.ltNotEqu:
+                            f.Write("\tcall neq_\n");
+                            break;
+                        case KeyWord.ltGreate:
+                            f.Write("\tcall ltGreate\n");
+                            break;
+                        case KeyWord.ltLess:
+                            f.Write("\tcall ltLess\n");
+                            break;
+                        default:
+                            throw new ArgumentException($"No correct type {TokensTable[i + 3].Type}");
+                    }
+                    f.Write("\tfistp buf\n");
+                    f.Write("\tmov ax,word ptr buf\n");
+                    f.Write("\tcmp ax,0\n");
+                    f.Write($"\tjz forFinish{lab + 1}\n");
+                }
                 if ((l.Type == KeyWord.ltNewValue))
                 {
                     int bufi;
@@ -1227,6 +1234,7 @@ namespace SPZ_GUI.ASM
             int n;
             for (n = 0; BufExprPostfixForm[n] != 3000; ++n)
             {
+                StackStack.Clear();
                 //puts("pf");
                 if ((!IsOperation(TokensTable[BufExprPostfixForm[n]].Type)) && (TokensTable[BufExprPostfixForm[n]].Type != KeyWord.ltNot))
                 {
