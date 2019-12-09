@@ -44,54 +44,70 @@ namespace SPZ_GUI
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(asmFile))
+            try
             {
-                MessageBox.Show("Asm file not exists");
+                if (string.IsNullOrWhiteSpace(asmFile))
+                {
+                    MessageBox.Show("Asm file not exists");
+                    return;
+                }
+
+                // generate the bat file to assemble code
+                string codeBat = fileResources + "\\" + "tasmFile.bat";
+                using (StreamWriter writer = new StreamWriter(codeBat))
+                {
+                    string tasmCommand = $"tasm {asmFile}";
+                    writer.WriteLine(tasmCommand);
+                }
+
+                // run bat file to tasm
+                Process p = new Process();
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.FileName = codeBat;
+                p.StartInfo.UseShellExecute = false;
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+
+                string asmObjFile = Path.Combine(Path.GetDirectoryName(asmFile), Path.GetFileNameWithoutExtension(asmFile) + ".obj");
+                // check if obj file was generated
+                if (!File.Exists(asmObjFile))
+                {
+                    MessageBox.Show($"Object file is not generated: {asmObjFile}");
+                    return;
+                }
+
+                // start creating .exe file
+                // create ba file
+                string exeBat = fileResources + "\\" + "tlinkFile.bat";
+                using (StreamWriter writer = new StreamWriter(exeBat))
+                {
+                    string tlinkCommand = $"tlink {asmObjFile}";
+                    writer.WriteLine(tlinkCommand);
+                }
+
+                // run bat file to tlink
+                p = new Process();
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.FileName = exeBat;
+                p.StartInfo.UseShellExecute = false;
+                p.Start();
+                output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+
+                string exeFilePath = Path.Combine(Path.GetDirectoryName(asmFile), Path.GetFileNameWithoutExtension(asmFile) + ".exe");
+                // check if exe file was generated
+                if (!File.Exists(exeFilePath))
+                {
+                    MessageBox.Show($"Exe file is not generated: {exeFilePath}");
+                    return;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Error while generating .exe file: {ex}");
                 return;
             }
-
-            // generate the bat file to assemble code
-            string codeBat = fileResources + "\\" + "tasmFile.bat";
-            using (StreamWriter writer = new StreamWriter(codeBat))
-            {
-                string tasmCommand = $"tasm {asmFile}";
-                writer.WriteLine(tasmCommand);
-            }
-
-            // run bat file to tasm
-            Process p = new Process();
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = codeBat;
-            p.StartInfo.UseShellExecute = false;
-            p.Start();
-            string output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
-
-            string asmObjFile = Path.Combine(Path.GetDirectoryName(asmFile), Path.GetFileNameWithoutExtension(asmFile) + ".obj");
-            // check if obj file was generated
-            if (!File.Exists(asmObjFile))
-            {
-                MessageBox.Show($"Object file is not generated: {asmObjFile}");
-                return;
-            }
-            
-            // start creating .exe file
-            // create ba file
-            string exeBat = fileResources + "\\" + "tlinkFile.bat";
-            using (StreamWriter writer = new StreamWriter(exeBat))
-            {
-                string tlinkCommand = $"tlink {asmObjFile}";
-                writer.WriteLine(tlinkCommand);
-            }
-
-            // run bat file to tlink
-            p = new Process();
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = exeBat;
-            p.StartInfo.UseShellExecute = false;
-            p.Start();
-            output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
 
         }
 
