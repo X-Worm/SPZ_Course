@@ -1111,9 +1111,9 @@ namespace SPZ_GUI.ASM
                     if (StartBlockStack.Peek() >= 0)
                     {
                         int temp = CucleStack.Pop();
-                        f.WriteLine($"\tmov ax, word ptr {TokensTable[temp].Name}");
-                        f.WriteLine("\tdec ax\n");
-                        f.WriteLine($"\tmov word ptr {TokensTable[temp].Name}, ax");
+                        //f.WriteLine($"\tmov ax, word ptr {TokensTable[temp].Name}");
+                        //f.WriteLine("\tdec ax\n");
+                        //f.WriteLine($"\tmov word ptr {TokensTable[temp].Name}, ax");
                         temp = StartBlockStack.Pop();
                         f.WriteLine($"\tjmp forStart{temp}");
                         f.WriteLine($"forFinish{temp}:");
@@ -1197,7 +1197,8 @@ namespace SPZ_GUI.ASM
                             f.Write("\tcall eq_\n");
                             break;
                         case KeyWord.ltNotEqu:
-                            f.Write("\tcall neq_\n");
+                            f.Write("\tcall eq_\n");
+                            f.Write("\tcall ltNot\n");
                             break;
                         case KeyWord.ltGreate:
                             f.Write("\tcall ltGreate\n");
