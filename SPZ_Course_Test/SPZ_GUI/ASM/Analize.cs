@@ -950,7 +950,7 @@ namespace SPZ_GUI.ASM
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
                     }
-                    if((TokensTable[j+3].Type == KeyWord.ltNotEqu || TokensTable[j+3].Type == KeyWord.ltEqu || TokensTable[j+3].Type == KeyWord.ltLess || TokensTable[j+3].Type == KeyWord.ltGreate))
+                    if(!(TokensTable[j+3].Type == KeyWord.ltNotEqu || TokensTable[j+3].Type == KeyWord.ltEqu || TokensTable[j+3].Type == KeyWord.ltLess || TokensTable[j+3].Type == KeyWord.ltGreate))
                     {
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 3].Line, "while support only operations: GE, LE, <>, ="));
@@ -974,6 +974,40 @@ namespace SPZ_GUI.ASM
                 }
                 if (TokensTable[j].Type == KeyWord.ltEOF) break;
             }
+
+            List<CheckBeginEnd> checkingBE = new List<CheckBeginEnd>();
+            // checking for Begin - end 
+            for(i = 0; i < TokensTable.Count; i++)
+            {
+                if(TokensTable[i].Type == KeyWord.ltBegin || TokensTable[i].Type == KeyWord.ltEnd)
+                {
+                    checkingBE.Add(new CheckBeginEnd { KeyWord = TokensTable[i].Type, Position = i });
+                }
+                    
+            }
+            for(i = 0; i < checkingBE.Count; i++)
+            {
+                if(checkingBE[i].KeyWord == KeyWord.ltBegin && !checkingBE[i].Checked)
+                {
+                    // check if exists ltEnd for this token
+                    var isExists = checkingBE.Any(item => item.KeyWord == KeyWord.ltEnd && !item.Checked);
+
+                    if (!isExists)
+                    {
+                        Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, 0, "BEGIN - END pairs unmatched, or END precedes BEGIN"));
+                    }
+                    else
+                    {
+                        // checked this items
+                        checkingBE[i].Checked = true;
+                        checkingBE.Where(item => item.KeyWord == KeyWord.ltEnd && !item.Checked).FirstOrDefault().Checked = true;
+
+                    }
+                }
+            }
+
+
             if (Err_num == 0) ; // implement
             ef.Close();
             return  new Tuple<int, List<Letters>, List<Identifier>>( Err_num, LettersTable, IdentTable);
@@ -1439,6 +1473,14 @@ namespace SPZ_GUI.ASM
         }
 
 
+    }
+
+    public class CheckBeginEnd
+    {
+        public KeyWord KeyWord { get; set; }
+        public int Position { get; set; }
+
+        public bool Checked { get; set; } = false;
     }
 }
 
