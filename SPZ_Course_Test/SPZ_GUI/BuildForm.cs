@@ -22,6 +22,7 @@ namespace SPZ_GUI
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false; this.MinimizeBox = false;
             lexemGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            lettersGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         }
 
         private void fileLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

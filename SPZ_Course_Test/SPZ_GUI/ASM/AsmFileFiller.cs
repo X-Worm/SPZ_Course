@@ -155,6 +155,16 @@ namespace SPZ_GUI.ASM
 
         }
 
+        public static void PrintNewLine(StreamWriter f)
+        {
+            f.WriteLine("MOV dl, 10");
+            f.WriteLine("MOV ah, 02h");
+            f.WriteLine("INT 21h");
+            f.WriteLine("MOV dl, 13");
+            f.WriteLine("MOV ah, 02h");
+            f.WriteLine("INT 21h");
+        }
+
         /// <summary>
         /// Call input file
         /// </summary>

@@ -514,6 +514,22 @@ namespace SPZ_GUI.ASM
         public static List<KeyWordToken> AnalisisTokens(StreamReader fi)
         {
             KeyWordToken tempTokens = new KeyWordToken();
+            TokensTable = new List<KeyWordToken>();
+            IsPresentInput = false; IsPresentOutput = false;
+            IsLetters = false; IsLight = false;
+            IfSave = false;
+            NumberOfTokens = 0;
+            IdentTable = new List<Identifier>();
+            NumberOfIdent = 0;
+            LettersTable = new List<Letters>();
+            NumberOfLetters = 0;
+            CurrLet = 0;
+            BufExprPostfixForm = new int[100];
+            nNumberErrors = 0;
+            IsLetters = false;
+            IsQuotes = false;
+            InFileName = "";
+            OutFileName = "";
             int i = 0;
             int localLine = line;
             char[] type = new char[50];
@@ -669,7 +685,7 @@ namespace SPZ_GUI.ASM
             return errorPattern;
         }
 
-        public static int ErrorChecking(StreamWriter ef)
+        public static Tuple<int, List<Letters>, List<Identifier>> ErrorChecking(StreamWriter ef)
         {
             int label = 0;
             int i = 0, j = 1, temp = 0, ValNum = 0;
@@ -810,7 +826,11 @@ namespace SPZ_GUI.ASM
                     int k = 1, flag = 0;
                     for (k = 1; k <= NumberOfIdent; k++)
                     {
-                        if (TokensTable[j].Name == IdentTable[k].Name)
+                        if(IdentTable.Count == 1)
+                        {
+                            ef.WriteLine(ErrorPatern(Err_num, TokensTable[j].Line, "\tIdentifier not found: (cannot initialize identifier after declaring, or identifier is not declared).") + TokensTable[j].Name);
+                        }
+                        else if(TokensTable[j].Name == IdentTable[k].Name)
                         {
                             flag = 1;
                             break;
@@ -925,27 +945,38 @@ namespace SPZ_GUI.ASM
                         Err_num++;
                         ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\'(\' after WHILE expected!"));
                     }
-                    //if (TokensTable[j + 2].Type != KeyWord.ltIdentifier)
-                    //{
-                    //    Err_num++;
-                    //    ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
-                    //}
-                    //if (TokensTable[j + 4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber)
-                    //{
-                    //    Err_num++;
-                    //    ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier or number in WHILE () expected!"));
-                    //}
+                    if (!(TokensTable[j + 2].Type == KeyWord.ltIdentifier || TokensTable[j+2].Type == KeyWord.ltNumber))
+                    {
+                        Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier in WHILE () expected!"));
+                    }
+                    if((TokensTable[j+3].Type == KeyWord.ltNotEqu || TokensTable[j+3].Type == KeyWord.ltEqu || TokensTable[j+3].Type == KeyWord.ltLess || TokensTable[j+3].Type == KeyWord.ltGreate))
+                    {
+                        Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 3].Line, "while support only operations: GE, LE, <>, ="));
+                    }
+                    if (!(TokensTable[j + 4].Type != KeyWord.ltIdentifier || TokensTable[j + 4].Type != KeyWord.ltNumber))
+                    {
+                        Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "Identifier or number in WHILE () expected!"));
+                    }
                     if (TokensTable[j + 5].Type != KeyWord.ltRBraket)
                     {
                         Err_num++;
-                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 4].Line, "\')\' after WHILE expected!"));
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 5].Line, "\')\' after WHILE expected!"));
                     }
+                    if(TokensTable[j+6].Type != KeyWord.ltBegin)
+                    {
+                        Err_num++;
+                        ef.WriteLine(ErrorPatern(Err_num, TokensTable[j + 6].Line, "BEGIN after WHILE expected!"));
+                    }
+                    BraketErr = Balans(j+5, KeyWord.ltEndGroup, KeyWord.ltBegin, KeyWord.ltEnd);
                 }
                 if (TokensTable[j].Type == KeyWord.ltEOF) break;
             }
             if (Err_num == 0) ; // implement
             ef.Close();
-            return Err_num;
+            return  new Tuple<int, List<Letters>, List<Identifier>>( Err_num, LettersTable, IdentTable);
 
         }
 
@@ -1134,8 +1165,15 @@ namespace SPZ_GUI.ASM
                         }
                         else
                         {
-                            f.WriteLine($"\tlea dx,{LettersTable[CurrLet].Name}");
-                            f.WriteLine("\tmov ah,09\n\tint 21h");
+                            if (LettersTable[CurrLet].Text.Contains("\\n"))
+                            {
+                                AsmFileFiller.PrintNewLine(f);
+                            }
+                            else
+                            {
+                                f.WriteLine($"\tlea dx,{LettersTable[CurrLet].Name}");
+                                f.WriteLine("\tmov ah,09\n\tint 21h");
+                            }
                         }
                         CurrLet++;
                         i += 4;
@@ -1399,6 +1437,8 @@ namespace SPZ_GUI.ASM
                 if (IsPresentInput && IsPresentOutput) break;
             }
         }
+
+
     }
 }
 

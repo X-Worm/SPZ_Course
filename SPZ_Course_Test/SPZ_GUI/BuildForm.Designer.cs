@@ -33,7 +33,13 @@
             this.fileLink = new System.Windows.Forms.LinkLabel();
             this.runButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.identGrid = new System.Windows.Forms.DataGridView();
+            this.lettersGrid = new System.Windows.Forms.DataGridView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.lexemGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.identGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lettersGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // lexemGrid
@@ -85,11 +91,49 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Compile and Run";
             // 
+            // identGrid
+            // 
+            this.identGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.identGrid.Location = new System.Drawing.Point(369, 33);
+            this.identGrid.Name = "identGrid";
+            this.identGrid.Size = new System.Drawing.Size(240, 150);
+            this.identGrid.TabIndex = 5;
+            // 
+            // lettersGrid
+            // 
+            this.lettersGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.lettersGrid.Location = new System.Drawing.Point(369, 205);
+            this.lettersGrid.Name = "lettersGrid";
+            this.lettersGrid.Size = new System.Drawing.Size(240, 140);
+            this.lettersGrid.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(369, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(73, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Identifier table";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(372, 186);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Letters table";
+            // 
             // BuildForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 357);
+            this.ClientSize = new System.Drawing.Size(620, 357);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lettersGrid);
+            this.Controls.Add(this.identGrid);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.fileLink);
@@ -98,6 +142,8 @@
             this.Name = "BuildForm";
             this.Text = "BuildForm";
             ((System.ComponentModel.ISupportInitialize)(this.lexemGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.identGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lettersGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,5 +156,9 @@
         public System.Windows.Forms.LinkLabel fileLink;
         public System.Windows.Forms.Button runButton;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.DataGridView identGrid;
+        public System.Windows.Forms.DataGridView lettersGrid;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

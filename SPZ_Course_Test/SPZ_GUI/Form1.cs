@@ -178,6 +178,8 @@ namespace SPZ_GUI
             // build file
             // get token list
             List<KeyWordToken> keyWordTokens = new List<KeyWordToken>();
+            List<Letters> lettersTable = new List<Letters>();
+            List<Identifier> identTable = new List<Identifier>();
             try
             {
                 using (StreamReader reader = new StreamReader(labelFileName.Text)) 
@@ -203,7 +205,7 @@ namespace SPZ_GUI
             {
                 using (StreamWriter writer = new StreamWriter(errorFilePath))
                 {
-                    errorNumber = Analize.ErrorChecking(writer);
+                    (errorNumber, lettersTable, identTable) = Analize.ErrorChecking(writer);
                 }
                 using (StreamReader reader = new StreamReader(errorFilePath))
                 {
@@ -222,6 +224,8 @@ namespace SPZ_GUI
                 // show form with error and tokens
                 BuildForm buildForm = new BuildForm();
                 buildForm.lexemGrid.DataSource = keyWordTokens;
+                buildForm.lettersGrid.DataSource = lettersTable;
+                buildForm.identGrid.DataSource = identTable;
                 buildForm.errorOutput.Text = errorMessages;
                 buildForm.fileLink.Enabled = false;
                 buildForm.runButton.Enabled = false;
@@ -232,6 +236,8 @@ namespace SPZ_GUI
                 // show form with error and tokens
                 BuildForm buildForm = new BuildForm();
                 buildForm.lexemGrid.DataSource = keyWordTokens;
+                buildForm.lettersGrid.DataSource = lettersTable;
+                buildForm.identGrid.DataSource = identTable;
                 buildForm.errorOutput.Text = "Error not found.";
                 buildForm.fileLink.Enabled = true;
                 buildForm.fileResources = resourceFolder;
