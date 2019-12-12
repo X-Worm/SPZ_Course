@@ -47,6 +47,8 @@ namespace SPZ_GUI
         {
             try
             {
+                #region CheckIfAsmFileExists
+
                 if (string.IsNullOrWhiteSpace(asmFile))
                 {
                     MessageBox.Show("Asm file not exists");
@@ -56,13 +58,47 @@ namespace SPZ_GUI
                 string filePath = System.AppDomain.CurrentDomain.BaseDirectory;
                 string resPath = string.Format("{0}Resources\\", Path.GetFullPath(Path.Combine(filePath, @"..\..\")));
 
+                // copy asm file to folder with tasm and tlink
+                try
+                {
+                    // previously delete file if it exists in res folder
+                    if (File.Exists(Path.Combine(resPath, Path.GetFileName(asmFile))))
+                    {
+                        File.Delete(Path.Combine(resPath, Path.GetFileName(asmFile)));
+                    }
+                    File.Copy(asmFile, Path.Combine(resPath, Path.GetFileName(asmFile)));
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Cannot copy .asm file to resources folder: {asmFile} to {resPath}");
+                    return;
+                }
+
+                // check if file exists in res folder (are copied)
+                if(!File.Exists(Path.Combine(resPath, Path.GetFileName(asmFile))))
+                {
+                    MessageBox.Show($"Cannot find {Path.GetFileName(asmFile)} in {resPath} folder");
+                    return;
+                }
+
+                #endregion
+
+                #region Generate_obj
+
                 // generate the bat file to assemble code
-                string codeBat = fileResources + "\\" + "tasmFile.bat";
+                string codeBat = resPath + "\\" + "tasmFile.bat";
                 using (StreamWriter writer = new StreamWriter(codeBat))
                 {
                     //writer.WriteLine("cd " + resPath);
-                    string tasmCommand = $"tasm {asmFile}";
+                    string tasmCommand = $"tasm {Path.GetFileName(asmFile)}";
                     writer.WriteLine(tasmCommand);
+                }
+
+                // check if in folder exists old .obf file -> if exist delete it
+                if(File.Exists(Path.Combine(resPath, Path.GetFileNameWithoutExtension(asmFile) + ".obj")))
+                {
+                    // delete it file
+                    File.Delete(Path.Combine(resPath, Path.GetFileNameWithoutExtension(asmFile) + ".obj"));
                 }
 
                 // run bat file to tasm
@@ -74,7 +110,7 @@ namespace SPZ_GUI
                 string output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
 
-                string asmObjFile = Path.Combine(Path.GetDirectoryName(asmFile), Path.GetFileNameWithoutExtension(asmFile) + ".obj");
+                string asmObjFile = Path.Combine(resPath, Path.GetFileNameWithoutExtension(asmFile) + ".obj");
                 // check if obj file was generated
                 if (!File.Exists(asmObjFile))
                 {
@@ -82,14 +118,25 @@ namespace SPZ_GUI
                     return;
                 }
 
+                #endregion
+
+                #region GenerateExe
+
                 // start creating .exe file
-                // create ba file
-                string exeBat = fileResources + "\\" + "tlinkFile.bat";
+                // create bat file
+                string exeBat = resPath + "\\" + "tlinkFile.bat";
                 using (StreamWriter writer = new StreamWriter(exeBat))
                 {
                    // writer.WriteLine("cd " + resPath);
                     string tlinkCommand = $"tlink {asmObjFile}";
                     writer.WriteLine(tlinkCommand);
+                }
+
+                // delete old .obj file if it exists
+                if (File.Exists(Path.Combine(resPath, Path.GetFileNameWithoutExtension(asmFile) + ".obj")))
+                {
+                    // delete it file
+                    File.Delete(Path.Combine(resPath, Path.GetFileNameWithoutExtension(asmFile) + ".obj"));
                 }
 
                 // run bat file to tlink
@@ -112,8 +159,10 @@ namespace SPZ_GUI
                 {
                     MessageBox.Show($"File generated to: {exeFilePath}");
                 }
+
+                #endregion
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Error while generating .exe file: {ex}");
                 return;
